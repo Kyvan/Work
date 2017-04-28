@@ -16,7 +16,7 @@ function syslogConfig() {
 	sed -i "6i \$ActionMailTo $name@$dsn" /etc/rsyslog.d/remote.conf
 	sed -i "7i \ " /etc/rsyslog.d/remote.conf
 	sed -i "8i \$template mailSubject,\"SUDO used on %hostname%\"" /etc/rsyslog.d/remote.conf
-	sed -i "9i \$template mailBody,\"RSYSLOG Alert\\r\\nmsg='%msg%'\"" /etc/rsyslog.d/remote.conf
+	sed -i "9i \$template mailBody,\"RSYSLOG Alert\\r\\nmsg=%msg%\"" /etc/rsyslog.d/remote.conf
 	sed -i "10i \ " /etc/rsyslog.d/remote.conf
 	sed -i "11i \$ActionMailSubject mailSubject" /etc/rsyslog.d/remote.conf
 	sed -i "12i \ " /etc/rsyslog.d/remote.conf
