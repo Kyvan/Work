@@ -15,7 +15,7 @@ function syslogConfig() {
 		sed -i "8i mail.*\	\	\	-/var/log/$chn/mail" /etc/rsyslog.conf
 		sed -i "9i mail.info\	\	\	-/var/log/$chn/mail.info" /etc/rsyslog.conf
 		sed -i "10i mail.warning\	\	\	-/var/log/$chn/mail.warn" /etc/rsyslog.conf
-		sed -i "11i mail.err\	\	\	/var/log/$chn/mail.err" /etc/rsyslog.conf
+		sed -i "11i mail.err\	\	\	-/var/log/$chn/mail.err" /etc/rsyslog.conf
 		sed -i "12i \ " /etc/rsyslog.conf
 		sed -i "13i \ " /etc/rsyslog.conf
 		sed -i "14i #" /etc/rsyslog.conf""
@@ -33,7 +33,7 @@ function syslogConfig() {
 		sed -i "26i # Warnings in one file" /etc/rsyslog.conf
 		sed -i "27i #" /etc/rsyslog.conf
 		sed -i "28i *.=warning;*.=err\	\	\	-/var/log/$chn/warn" /etc/rsyslog.conf
-		sed -i "29i *.crit\	\	\	/var/log/$chn/warn"  /etc/rsyslog.conf
+		sed -i "29i *.crit\	\	\	-/var/log/$chn/warn"  /etc/rsyslog.conf
 		sed -i "30i \ " /etc/rsyslog.conf
 		sed -i "31i \ " /etc/rsyslog.conf
 		sed -i "32i #" /etc/rsyslog.conf
