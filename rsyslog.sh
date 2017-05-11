@@ -10,17 +10,17 @@ function syslogConfig() {
 		sed -i "3i \$InputTCPServerRun 514" /etc/rsyslog.conf
 		sed -i "4i \ " /etc/rsyslog.conf
 		sed -i "5i if (\$fromhost-ip startswith $cip) then {" /etc/rsyslog.conf 
-		sed -i "6i # email-messages" /etc/rsyslog.conf""
-		sed -i "7i #" /etc/rsyslog.conf   ""
+		sed -i "6i # email-messages" /etc/rsyslog.conf
+		sed -i "7i #" /etc/rsyslog.conf 
 		sed -i "8i mail.*\	\	\	-/var/log/$chn/mail" /etc/rsyslog.conf
 		sed -i "9i mail.info\	\	\	-/var/log/$chn/mail.info" /etc/rsyslog.conf
 		sed -i "10i mail.warning\	\	\	-/var/log/$chn/mail.warn" /etc/rsyslog.conf
 		sed -i "11i mail.err\	\	\	-/var/log/$chn/mail.err" /etc/rsyslog.conf
 		sed -i "12i \ " /etc/rsyslog.conf
 		sed -i "13i \ " /etc/rsyslog.conf
-		sed -i "14i #" /etc/rsyslog.conf""
-		sed -i "15i #" news-messages /etc/rsyslog.conf
-		sed -i "16i #" /etc/rsyslog.conf""
+		sed -i "14i #" /etc/rsyslog.conf
+		sed -i "15i # news-messages" /etc/rsyslog.conf
+		sed -i "16i #" /etc/rsyslog.conf
 		sed -i "17i news.crit\	\	\	-/var/log/$chn/news/news.crit" /etc/rsyslog.conf
 		sed -i "18i news.err\	\	\	-/var/log/$chn/news/news.err" /etc/rsyslog.conf
 		sed -i "19i news.notice\	\	\	-/var/log/$chn/news/news.notice" /etc/rsyslog.conf
