@@ -12,7 +12,10 @@
 #		phpMyAdmin		  #
 ###########################################
 
-yum install -y wget yum-utils git
+yum install -y wget yum-utils git iptables-services
+
+systemctl stop firewalld
+systemctl disable firewalld
 
 read -p "Are you installing PLESK or phpMyAdmin? (Plesk/PHP)" choice
 
@@ -38,8 +41,12 @@ elif [ ${$choice,,} == "php" ] ; then
 	yum update -y
 	yum install -y httpd epel-release mysql-server
 
-	
 	yum install -y php phpmyadmin
+	
+	systemctl start mysqld
+	systemctl start httpd
+	systemctl enable mysqld
+	systemctl enable httpd
 else
 	echo -e "Your answer doesn't match any of the options.\nSo I guess we are done here."
 fi
