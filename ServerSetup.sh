@@ -17,7 +17,8 @@ yum install -y wget yum-utils git iptables-services bash-completion
 systemctl stop firewalld
 systemctl disable firewalld
 
-sed -i 's/#//g' /etc/ssh/sshd_config
+sed -i 's/#//' /etc/ssh/sshd_config
+sed -i 's/22/10022/' /etc/ssh/sshd_config
 
 sed -i 's/22/10022/' /etc/sysconfig/iptables
 
