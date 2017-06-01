@@ -62,6 +62,7 @@ function syslogConfig() {
 if rpm -qa | grep -q rsyslog ; then
 	syslogConfig
 else
+	cd /etc/yum.repos.d && wget http://rpms.adiscon.com/rsyslogall.repo
 	yum install -y rsyslog
 	syslogConfig
 fi
