@@ -28,7 +28,10 @@ intName="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
 
 sed -i "318i relayhost = 64.26.137.70" /etc/postfix/main.cf
 
+\cp /root/Work/snmpd /etc/snmp/snmpd.conf
+
 systemctl restart postfix
+systemctl restart snmpd
 
 read -p "What is your Net Mask? " netMask
 read -p "What is your IP address? " ipADD
