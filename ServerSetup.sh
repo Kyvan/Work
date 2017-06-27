@@ -26,12 +26,25 @@ intName="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
 #systemctl start itpables
 #systemctl enable iptables
 
+sed -i "116s/localhost/all/" /etc/postfix/main.cf
 sed -i "318i relayhost = 64.26.137.70" /etc/postfix/main.cf
 
 \cp /root/Work/snmpd /etc/snmp/snmpd.conf
 
+read -p "What is your Community Name for this server? " comName
+sed -i "s/PL#KSN!X1/$comName/" /etc/snmp/snmpd.conf
+
 systemctl restart postfix
 systemctl restart snmpd
+
+read -p "What is the username for the new user? " user
+useradd $user
+read -p "What is the password for the new user? " pass
+echo $user:$pass | chpasswd
+sed -i "92i $user	ALL=(ALL)	ALL" /etc/sudoers
+
+read -p "What is the hostname? " host
+sed -i "s/$(cat /etc/hostname)/$host/" /etc/hostname
 
 read -p "What is your Net Mask? " netMask
 read -p "What is your IP address? " ipADD
@@ -71,6 +84,12 @@ if [ ${choice,,} == "plesk" ] ; then
 	wget http://autoinstall.plesk.com/plesk-installer
 	chmod +x plesk-installer
 	./plesk-installer
+	
+	sed -i "10i -A INPUT -p tcp -m tcp --dport 8447 -j ACCEPT" /etc/sysconfig/iptables
+	sed -i "11i -A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT" /etc/sysconfig/iptables
+	sed -i "12i -A INPUT -p tcp -m tcp --dport 8880 -j ACCEPT" /etc/sysconfig/iptables
+	sed -i "13i -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT" /etc/sysconfig/iptables
+	sed -i "14i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
 
 elif [ ${choice,,} == "php" ] ; then
 	if (( $version == 7 )) ; then 
@@ -89,6 +108,9 @@ elif [ ${choice,,} == "php" ] ; then
 		rpm -Uvh remi-release-7.rpm epel-release-latest-6.noarch.rpm
 		rpm -ivh mysql-community-release-el6-5.noarch.rpm
 	fi
+
+	sed -i "10i -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT" /etc/sysconfig/iptables
+	sed -i "11i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
 	
 	echo -e "Which version of PHP do you want to install?\nPlease put the first to digist without any dots or dashes.\nExample: for version 5.6.XX enter 56"
 	read phpv
@@ -97,7 +119,7 @@ elif [ ${choice,,} == "php" ] ; then
 	
 	yum clean all
 	yum update -y
-	yum install -y httpd epel-release mysql mysql-server php phpmyadmin 
+	yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
 	
 	systemctl start mysqld
 	systemctl start httpd
