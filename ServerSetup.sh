@@ -13,19 +13,54 @@
 ###########################################
 
 version="$(cat /etc/centos-release | awk '{print $4}' | awk -F \. '{print $1}')"
+mac="$(ip add | grep 'link/ether' | awk '{print $2}')"
+intName="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
 
-yum install -y wget yum-utils git iptables-services bash-completion
+#yum install -y wget yum-utils git iptables-services net-snmp net-snmp-utils
 
-systemctl stop firewalld
-systemctl disable firewalld
+#sed -i 's/#//' /etc/ssh/sshd_config
+#sed -i 's/22/10022/' /etc/ssh/sshd_config
+#sed -i 's/22/10022/' /etc/sysconfig/iptables
 
-sed -i 's/#//' /etc/ssh/sshd_config
-sed -i 's/22/10022/' /etc/ssh/sshd_config
-sed -i 's/22/10022/' /etc/sysconfig/iptables
+#systemctl restart sshd
+#systemctl start itpables
+#systemctl enable iptables
 
-systemctl restart sshd
-systemctl start itpables
-systemctl enable iptables
+sed -i "318i relayhost = 64.26.137.70" /etc/postfix/main.cf
+
+systemctl restart postfix
+
+read -p "What is your Net Mask? " netMask
+read -p "What is your IP address? " ipADD
+read -p "What is your broadcast? " bcast
+read -p "What is your first DNS IP? " dns1
+read -p "What is your second DNS IP? " dns2
+
+if (( $version == 7 )) ; then
+	mv /etc/sysconfig/network-scripts/ifcfg-eno16777984 /etc/sysconfig/network-scripts/ifcfg-$intName
+
+	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/eno16777984/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
+
+	systemctl restart NetworkManager
+elif (( $version == 6 )) ; then
+	mv /etc/sysconfig/network-scripts/ifcfg-eno16777984 /etc/sysconfig/network-scripts/ifcfg-$intName
+
+	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/eno16777984/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.172/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
+
+	systemctl restart NetworkManager
+fi
 
 read -p "Are you installing PLESK or phpMyAdmin? (Plesk/PHP) " choice
 
