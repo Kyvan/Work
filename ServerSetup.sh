@@ -1,16 +1,16 @@
 #!/bin/bash -u
 
-###########################################
-#	   Made by Kyvan Emami		  #
-#	 DATE:	  May 12th, 2017	  #
-#	Script to setup Linux Boxes	  #
-#	    Services include:		  #
-#		  HTTPD			  #
-#		   PHP			  #
-#		  MySQL			  #
-#		  Plesk			  #
-#		phpMyAdmin		  #
-###########################################
+###################################################################################
+#				   Made by Kyvan Emami	   			  #
+#				  DATE:	   May 12th, 2017  			  #
+#				Script to setup Linux Boxes			  #
+#				    Services include:	   			  #
+#					  HTTPD		   			  #
+#					   PHP		   			  #
+#					  MySQL		   			  #
+#					  Plesk		   			  #
+#					phpMyAdmin	   			  #
+###################################################################################
 
 version="$(cat /etc/centos-release | awk '{print $4}' | awk -F \. '{print $1}')"
 mac="$(ip add | grep 'link/ether' | awk '{print $2}')"
@@ -57,13 +57,14 @@ if (( $version == 7 )) ; then
 elif (( $version == 6 )) ; then
 	mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-$intName
 
-	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i '/HARDWARE/d' /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "10i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/eno16777984/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.171/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.171/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.171/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.171/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.171/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
 
 	systemctl restart NetworkManager
 fi
