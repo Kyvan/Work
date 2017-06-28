@@ -16,16 +16,6 @@ version="$(cat /etc/centos-release | awk '{print $4}' | awk -F \. '{print $1}')"
 mac="$(ip add | grep 'link/ether' | awk '{print $2}')"
 intName="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
 
-#yum install -y wget yum-utils git iptables-services net-snmp net-snmp-utils
-
-#sed -i 's/#//' /etc/ssh/sshd_config
-#sed -i 's/22/10022/' /etc/ssh/sshd_config
-#sed -i 's/22/10022/' /etc/sysconfig/iptables
-
-#systemctl restart sshd
-#systemctl start itpables
-#systemctl enable iptables
-
 sed -i "116s/localhost/all/" /etc/postfix/main.cf
 sed -i "318i relayhost = 64.26.137.70" /etc/postfix/main.cf
 
@@ -65,7 +55,7 @@ if (( $version == 7 )) ; then
 
 	systemctl restart NetworkManager
 elif (( $version == 6 )) ; then
-	mv /etc/sysconfig/network-scripts/ifcfg-eno16777984 /etc/sysconfig/network-scripts/ifcfg-$intName
+	mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-$intName
 
 	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/eno16777984/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
