@@ -54,6 +54,7 @@ if (( $version == 7 )) ; then
 	sed -i "s/10.22.1.172/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
 
 	systemctl restart NetworkManager
+	
 elif (( $version == 6 )) ; then
 	mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-$intName
 
@@ -66,7 +67,7 @@ elif (( $version == 6 )) ; then
 	sed -i "s/10.22.1.171/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.171/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
 
-	systemctl restart NetworkManager
+	service network restart
 fi
 
 read -p "Are you installing PLESK or phpMyAdmin? (Plesk/PHP) " choice
