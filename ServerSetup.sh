@@ -1,16 +1,16 @@
 #!/bin/bash -u
 
-###################################################################################
-#				   Made by Kyvan Emami	   			  #
-#				  DATE:	   May 12th, 2017  			  #
-#				Script to setup Linux Boxes			  #
-#				    Services include:	   			  #
-#					  HTTPD		   			  #
-#					   PHP		   			  #
-#					  MySQL		   			  #
-#					  Plesk		   			  #
-#					phpMyAdmin	   			  #
-###################################################################################
+#########################################################################################
+#				   Made by Kyvan Emami	   			  	#
+#				  DATE:	   May 12th, 2017  			  	#
+#				Script to setup Linux Boxes				#
+#				    Services include:	   			  	#
+#					  HTTPD		   			  	#
+#					   PHP		   			  	#
+#					  MySQL		   			  	#
+#					  Plesk		   			  	#
+#					phpMyAdmin	   			  	#
+#########################################################################################
 
 version="$(cat /etc/centos-release | awk '{print $4}' | awk -F \. '{print $1}')"
 mac="$(ip add | grep 'link/ether' | awk '{print $2}')"
