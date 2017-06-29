@@ -92,6 +92,23 @@ elif [ ${choice,,} == "php" ] ; then
 		rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm
 		rpm -ivh mysql-community-release-el7-5.noarch.rpm
 		
+		sed -i "10i -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT" /etc/sysconfig/iptables
+		sed -i "11i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
+		
+		echo -e "Which version of PHP do you want to install?\nPlease put the first to digist without any dots or dashes.\nExample: for version 5.6.XX enter 56"
+		read phpv
+
+		yum-config-manager --enable remi-php$phpv
+		
+		yum clean all
+		yum update -y
+		yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
+		
+		systemctl start mysqld
+		systemctl start httpd
+		systemctl enable mysqld
+		systemctl enable httpd
+		
 	elif (( $version == 6 )) ; then
 		wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
 		wget http://rpms.remirepo.net/enterprise/remi-release-6.rpm
@@ -99,24 +116,27 @@ elif [ ${choice,,} == "php" ] ; then
 		
 		rpm -Uvh remi-release-7.rpm epel-release-latest-6.noarch.rpm
 		rpm -ivh mysql-community-release-el6-5.noarch.rpm
+		
+		sed -i "10i -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT" /etc/sysconfig/iptables
+		sed -i "11i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
+		
+		echo -e "Which version of PHP do you want to install?\nPlease put the first to digist without any dots or dashes.\nExample: for version 5.6.XX enter 56"
+		read phpv
+
+		yum-config-manager --enable remi-php$phpv
+		
+		yum clean all
+		yum update -y
+		yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
+		
+		service mysqld start
+		service httpd start
+		chkconfig mysqld on
+		chkconfig httpd on
+		
 	fi
 
-	sed -i "10i -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT" /etc/sysconfig/iptables
-	sed -i "11i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
 	
-	echo -e "Which version of PHP do you want to install?\nPlease put the first to digist without any dots or dashes.\nExample: for version 5.6.XX enter 56"
-	read phpv
-
-	yum-config-manager --enable remi-php$phpv
-	
-	yum clean all
-	yum update -y
-	yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
-	
-	systemctl start mysqld
-	systemctl start httpd
-	systemctl enable mysqld
-	systemctl enable httpd
 
 else
 	echo -e "Your answer doesn't match any of the options.\nSo I guess we are done here."
