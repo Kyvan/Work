@@ -50,8 +50,8 @@ if (( $version == 7 )) ; then
 	sed -i "s/10.22.1.172/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.172/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.172/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.81/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
 
 	systemctl restart NetworkManager
 	
@@ -59,13 +59,13 @@ elif (( $version == 6 )) ; then
 	mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-$intName
 
 	sed -i '/HARDWARE/d' /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "10i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/eno16777984/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "6i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/eth0/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.171/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.171/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.171/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.171/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.171/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "4i DNS2=$dns2" /etc/sysconfig/network-scripts/ifcfg-$intName
 
 	service network restart
 fi
