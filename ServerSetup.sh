@@ -38,6 +38,7 @@ sed -i "s/$(cat /etc/hostname)/$host/" /etc/hostname
 
 read -p "What is your Net Mask? " netMask
 read -p "What is your IP address? " ipADD
+read -p "What is your Gateway? " gtwy
 read -p "What is your broadcast? " bcast
 read -p "What is your first DNS IP? " dns1
 read -p "What is your second DNS IP? " dns2
@@ -48,8 +49,9 @@ if (( $version == 7 )) ; then
 	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/eno16777984/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.172/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.81/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
 
@@ -62,8 +64,9 @@ elif (( $version == 6 )) ; then
 	sed -i "6i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/eth0/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.171/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.171/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.171/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
 	sed -i "4i DNS2=$dns2" /etc/sysconfig/network-scripts/ifcfg-$intName
 
