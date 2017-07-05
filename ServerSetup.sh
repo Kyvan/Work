@@ -186,9 +186,7 @@ elif [ ${choice,,} == "php" ] ; then
 		chkconfig httpd on
 		
 	fi
-
 	
-
 else
 	# An echo statement telling you the the choice you made was not one of the options provided and then stops the script
 	echo -e "Your answer doesn't match any of the options.\nSo I guess we are done here."
