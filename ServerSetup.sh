@@ -12,9 +12,10 @@
 #					phpMyAdmin	   			  	#
 #########################################################################################
 
-version="$(cat /etc/centos-release | awk '{print $4}' | awk -F \. '{print $1}')"
+version="$(grep -o "[[:digit:]]" /etc/centos-release | head -1)"
 mac="$(ip add | grep 'link/ether' | awk '{print $2}')"
-intName="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
+intName7="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
+intName6="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
 
 sed -i "116s/localhost/all/" /etc/postfix/main.cf
 sed -i "318i relayhost = 64.26.137.70" /etc/postfix/main.cf
@@ -46,30 +47,33 @@ read -p "What is your second DNS IP? " dns2
 if (( $version == 7 )) ; then
 	mv /etc/sysconfig/network-scripts/ifcfg-eno16777984 /etc/sysconfig/network-scripts/ifcfg-$intName
 
-	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/eno16777984/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.172/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.81/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName
+	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName7
+	sed -i "s/eno16777984/$intName7/g" /etc/sysconfig/network-scripts/ifcfg-$intName7
+	sed -i "s/10.22.1.172/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName7
+	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-$intName7
+	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName7
+	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName7
+	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName7
+	sed -i "s/10.22.1.81/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName7
 
 	systemctl restart NetworkManager
 	
 elif (( $version == 6 )) ; then
 	mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-$intName
 
-	sed -i '/HARDWARE/d' /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "6i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/eth0/$intName/g" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.171/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName
-	sed -i "4i DNS2=$dns2" /etc/sysconfig/network-scripts/ifcfg-$intName
-
+	sed -i '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i "6i HWADDR=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i "s/eth0/$intName6/g" /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i "s/10.22.1.171/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i "s/10.22.1.81/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i '10s/yes/no/' /etc/sysconfig/network-scripts/ifcfg-$intName6
+	
+	service NetworkManager stop
+	chkconfig NetworkManager off
 	service network restart
 fi
 
