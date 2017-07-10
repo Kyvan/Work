@@ -34,16 +34,23 @@ sed -i "s/PL#KSN!X1/$comName/" /etc/snmp/snmpd.conf
 systemctl restart postfix
 systemctl restart snmpd
 
-# Asks for the username and then adds the user
-read -p "What is the username for the new user? " user
-useradd $user
 
-# Asks for the password and then adds the password for the user
-read -p "What is the password for the new user? " pass
-echo $user:$pass | chpasswd
+# Ask how many users needs to be made
+read -p "How many users do you need to make (enter in number format)? " userNum
 
-# Adds the new user to the SUDOERS file so it has SUDO access
-sed -i "92i $user	ALL=(ALL)	ALL" /etc/sudoers
+# A for loop that makes the number of users specified based on the previous question
+for (( i = 0 ; i < $userNum ; i++ )) ; do
+	# Asks for the username and then adds the user
+	read -p "What is the username for the new user? " user
+	useradd $user
+
+	# Asks for the password and then adds the password for the user
+	read -p "What is the password for the new user? " pass
+	echo $user:$pass | chpasswd
+
+	# Adds the new user to the SUDOERS file so it has SUDO access
+	sed -i "92i $user	ALL=(ALL)	ALL" /etc/sudoers
+done
 
 # Asks for the hostname and changes the hostname for the box
 read -p "What is the hostname? " host
@@ -168,7 +175,7 @@ elif [ ${choice,,} == "php" ] ; then
 		sed -i "11i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
 		
 		# Ask the user for the version of PHP they need to isntall		
-		echo -e "Which version of PHP do you want to install?\nPlease put the first to digist without any dots or dashes.\nExample: for version 5.6.XX enter 56"
+		echo -e "Which version of PHP do you want to install?\nPlease put the first to digits without any dots or dashes.\nExample: for version 5.6.XX enter 56"
 		read phpv
 
 		# Enables the repository needed for the version of PHP that needs to be installed
