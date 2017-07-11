@@ -19,6 +19,23 @@ mac="$(ip add | grep 'link/ether' | awk '{print $2}')"
 intName7="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
 intName6="$(ip add | grep eth | awk '{print $2}' | awk -F \: '{print $1}')"
 
+# Function to make users
+function userCreation {
+	# A for loop that makes the number of users specified based on the previous question
+	for (( i = 0 ; i < $userNum ; i++ )) ; do
+		# Asks for the username and then adds the user
+		read -p "What is the username for the new user? " user
+		useradd $user
+
+		# Asks for the password and then adds the password for the user
+		read -p "What is the password for the new user? " pass
+		echo $user:$pass | chpasswd
+
+		# Adds the new user to the SUDOERS file so it has SUDO access
+		sed -i "92i $user	ALL=(ALL)	ALL" /etc/sudoers
+	done
+}
+
 # Using sed to replace and add lines in POSTFIX to relay to IronPort
 sed -i "116s/localhost/all/" /etc/postfix/main.cf
 sed -i "318i relayhost = 64.26.137.70" /etc/postfix/main.cf
@@ -34,23 +51,11 @@ sed -i "s/PL#KSN!X1/$comName/" /etc/snmp/snmpd.conf
 systemctl restart postfix
 systemctl restart snmpd
 
-
 # Ask how many users needs to be made
 read -p "How many users do you need to make (enter in number format)? " userNum
 
-# A for loop that makes the number of users specified based on the previous question
-for (( i = 0 ; i < $userNum ; i++ )) ; do
-	# Asks for the username and then adds the user
-	read -p "What is the username for the new user? " user
-	useradd $user
-
-	# Asks for the password and then adds the password for the user
-	read -p "What is the password for the new user? " pass
-	echo $user:$pass | chpasswd
-
-	# Adds the new user to the SUDOERS file so it has SUDO access
-	sed -i "92i $user	ALL=(ALL)	ALL" /etc/sudoers
-done
+# Calls the functiontion to make users
+userCreation userNum
 
 # Asks for the hostname and changes the hostname for the box
 read -p "What is the hostname? " host
@@ -64,10 +69,10 @@ read -p "What is your broadcast? " bcast
 read -p "What is your first DNS IP? " dns1
 read -p "What is your second DNS IP? " dns2
 
-# An IF statement to check for the version of the CentOS using the $version variable made earlier
-if (( $version == 7 )) ; then
+# Function to fix the networking issue caused by cloning the box (centOS 7.x)
+function networkFixer7 {
 	# Renames the interface config file name to the new one (needed because of clonign issues)
-	mv /etc/sysconfig/network-scripts/ifcfg-eno16777984 /etc/sysconfig/network-scripts/ifcfg-$intName7
+	mv /etc/sysconfig/network-scripts/ifcfg-eno16777984 /etc/sysconfig/network-scripts/ifcfg-$intName
 
 	# Replaces the old information with the new ones optained from the question asked earlier
 	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName7
@@ -81,10 +86,12 @@ if (( $version == 7 )) ; then
 
 	# Restart NetworkManager for the changes to take effect
 	systemctl restart NetworkManager
-	
-elif (( $version == 6 )) ; then
+}
+
+# Function to fix the networking issue caused by cloning the box (centOS 6.x)
+function networkFixer6 {
 	# Renames the interface config file name to the new one (needed because of clonign issues)
-	mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-$intName6
+	mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-$intName
 
 	# Replaces the old information with the new ones optained from the question asked earlier
 	sed -i '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-$intName6
@@ -102,13 +109,17 @@ elif (( $version == 6 )) ; then
 	service NetworkManager stop
 	chkconfig NetworkManager off
 	service network restart
+}
+
+# If statement to check the version of CentOS box and call the correct function to fix netwroking issues
+if (( $version == 6 )) ; then
+	networkFixer6 version intName6 mac ipADD bcast gtwy netMask dns1 dns2
+elif (( $version == 7 )) ; then
+	networkFixer7 version intName7 mac ipADD bcast gtwy netMask dns1 dns2
 fi
 
-# Asks user if they need to install PLESK or phpMyAdmin
-read -p "Are you installing PLESK or phpMyAdmin? (Plesk/PHP) " choice
-
-# An IF statement to check the user's answer to install the appropriate packages
-if [ ${choice,,} == "plesk" ] ; then
+# Function to install plesk
+function pleskInstall {
 	# Gets the PLESK installer from the PLESK website using wget
 	wget http://autoinstall.plesk.com/plesk-installer
 	# Adds execute permission to the installer so it can be executed
@@ -125,79 +136,94 @@ if [ ${choice,,} == "plesk" ] ; then
 
 	# Restarts IPTABLES service for the changes to take effect
 	systemctl restart iptables
+}
 
+# Function to install phpMyAdmin (CentOS 6.x)
+function phpInstall6 {
+	# Gets the repositories for EPEL, PHP, and MySQL from their websites
+	wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+	wget http://rpms.remirepo.net/enterprise/remi-release-6.rpm
+	wget http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm
+
+	# Installs the repositories
+	rpm -Uvh remi-release-7.rpm epel-release-latest-6.noarch.rpm
+	rpm -ivh mysql-community-release-el6-5.noarch.rpm
+
+	# Inserts the rules needed for phpMyAdmin to communicate with the outside world to IPTABLES
+	sed -i "10i -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT" /etc/sysconfig/iptables
+	sed -i "11i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
+
+	# Restarts IPTABLES service for the above changes to take effect
+	service iptables restart
+
+	# Ask the user for the version of PHP they need to isntall
+	echo -e "Which version of PHP do you want to install?\nPlease put the first to digits without any dots or dashes.\nExample: for version 5.6.XX enter 56"
+	read phpv
+
+	# Enables the repository needed for the version of PHP that needs to be installed
+	yum-config-manager --enable remi-php$phpv
+	# Cleans the repositories to get rid of the unused ones, updates the box, and then installs the needed packages
+
+	yum clean all
+	yum update -y
+	yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
+
+	# Restart and Enable MySQL and HTTP services
+	service mysqld start
+	service httpd start
+	chkconfig mysqld on
+	chkconfig httpd on
+}
+
+# Function to install phpMyAdmin (CentOS 7.x)
+function phpInstall7 {
+	# Gets the repositories for EPEL, PHP, and MySQL from their websites
+	wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+	wget http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+	wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+
+	# Installs the repositories
+	rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm
+	rpm -ivh mysql-community-release-el7-5.noarch.rpm
+
+	# Inserts the rules needed for phpMyAdmin to communicate with the outside world to IPTABLES
+	sed -i "10i -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT" /etc/sysconfig/iptables
+	sed -i "11i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
+
+	# Restarts IPTABLES service for the above changes to take effect 
+	systemctl restart iptables
+
+	# Ask the user for the version of PHP they need to isntall
+	echo -e "Which version of PHP do you want to install?\nPlease put the first to digist without any dots or dashes.\nExample: for version 5.6.xx enter 56"
+	read phpv
+
+	# Enables the repository needed for the version of PHP that needs to be installed
+	yum-config-manager --enable remi-php$phpv
+
+	# Cleans the repositories to get rid of the unused ones, updates the box, and then installs the needed packages
+	yum clean all
+	yum update -y
+	yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
+
+	# Restart and Enable MySQL and HTTP services
+	systemctl start mysqld
+	systemctl start httpd
+	systemctl enable mysqld
+	systemctl enable httpd
+}
+
+# Asks user if they need to install PLESK or phpMyAdmin
+read -p "Are you installing PLESK or phpMyAdmin? (Plesk/PHP) " choice
+
+# An IF statement to check the user's answer to install the appropriate packages
+if [ ${choice,,} == "plesk" ] ; then
+	pleskInstall
 elif [ ${choice,,} == "php" ] ; then
 	# A nested IF statement to check the version of CentOS installed and install the appropriate packages based on the version of CentOS
 	if (( $version == 7 )) ; then 
-		# Gets the repositories for EPEL, PHP, and MySQL from their websites
-		wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-		wget http://rpms.remirepo.net/enterprise/remi-release-7.rpm
-		wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
-
-		# Installs the repositories
-		rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm
-		rpm -ivh mysql-community-release-el7-5.noarch.rpm
-
-		# Inserts the rules needed for phpMyAdmin to communicate with the outside world to IPTABLES
-		sed -i "10i -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT" /etc/sysconfig/iptables
-		sed -i "11i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
-
-		# Restarts IPTABLES service for the above changes to take effect 
-		systemctl restart iptables
-
-		# Ask the user for the version of PHP they need to isntall
-		echo -e "Which version of PHP do you want to install?\nPlease put the first to digist without any dots or dashes.\nExample: for version 5.6.xx enter 56"
-		read phpv
-
-		# Enables the repository needed for the version of PHP that needs to be installed
-		yum-config-manager --enable remi-php$phpv
-
-		# Cleans the repositories to get rid of the unused ones, updates the box, and then installs the needed packages
-		yum clean all
-		yum update -y
-		yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
-
-		# Restart and Enable MySQL and HTTP services
-		systemctl start mysqld
-		systemctl start httpd
-		systemctl enable mysqld
-		systemctl enable httpd
-
+		phpInstall7
 	elif (( $version == 6 )) ; then
-		# Gets the repositories for EPEL, PHP, and MySQL from their websites
-		wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-		wget http://rpms.remirepo.net/enterprise/remi-release-6.rpm
-		wget http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm
-
-		# Installs the repositories
-		rpm -Uvh remi-release-7.rpm epel-release-latest-6.noarch.rpm
-		rpm -ivh mysql-community-release-el6-5.noarch.rpm
-
-		# Inserts the rules needed for phpMyAdmin to communicate with the outside world to IPTABLES
-		sed -i "10i -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT" /etc/sysconfig/iptables
-		sed -i "11i -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT" /etc/sysconfig/iptables
-
-		# Restarts IPTABLES service for the above changes to take effect
-		service iptables restart
-
-		# Ask the user for the version of PHP they need to isntall
-		echo -e "Which version of PHP do you want to install?\nPlease put the first to digits without any dots or dashes.\nExample: for version 5.6.XX enter 56"
-		read phpv
-
-		# Enables the repository needed for the version of PHP that needs to be installed
-		yum-config-manager --enable remi-php$phpv
-
-		# Cleans the repositories to get rid of the unused ones, updates the box, and then installs the needed packages
-		yum clean all
-		yum update -y
-		yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
-
-		# Restart and Enable MySQL and HTTP services
-		service mysqld start
-		service httpd start
-		chkconfig mysqld on
-		chkconfig httpd on
-		
+		phpInstall6
 	fi
 else
 	# An echo statement telling you the the choice you made was not one of the options provided and then stops the script
