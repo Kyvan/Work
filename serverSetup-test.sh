@@ -166,7 +166,7 @@ function phpInstall6 {
 
 	yum clean all
 	yum update -y
-	yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
+	yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql php-mbstring
 
 	# Restart and Enable MySQL and HTTP services
 	service mysqld start
@@ -203,7 +203,7 @@ function phpInstall7 {
 	# Cleans the repositories to get rid of the unused ones, updates the box, and then installs the needed packages
 	yum clean all
 	yum update -y
-	yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql
+	yum install -y httpd epel-release mysql mysql-server php phpmyadmin php-mysql php-mbstring
 
 	# Restart and Enable MySQL and HTTP services
 	systemctl start mysqld
