@@ -1,6 +1,6 @@
 #!/bin/bash -u
 
-# Variable to hold the humber of mounted shares
+# Variable to hold the humber of mounted drives
 mountNum=`mount | grep -ci "datadump"`
 
 # If statement, to check and see if the number of mapped drives are correct,
