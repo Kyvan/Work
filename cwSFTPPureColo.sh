@@ -35,16 +35,21 @@ for (( i = 0 ; i < $numUser ; i++ )) ; do
 	echo -e "//$serverIP/DataDump $userHome/upload cifs user,rw,uid=$userID,username=$userName,password=userPass 0 0" >> /etc/fstab
 
 	# Generates the RSA key for the user
-	ssh-keygen -t rsa -N "" -f $userHome/.ssh/$userName_rsa
-	mv $userHome/.ssh/$userName_rsa.pub $userHome/.ssh/authorized_keys
+	ssh-keygen -t rsa -N "" -f $userHome/.ssh/"$userName"_rsa
+	mv $userHome/.ssh/"$userName"_rsa.pub $userHome/.ssh/authorized_keys
 
 	# Changes ownership user folders
-	chown -R $userName:$userName .ssh upload
+	chown -R $userName:$userName $userHome/.ssh $userHome/upload
 
 	# Change the permissions for the .ssh folder and RSA keys
-	chmod 0700 $userHome/.ssh $userName/.ssh/authorized_keys
-	chmod 0600 $userHome/.ssh/$userName_rsa
+	chmod 0700 $userHome/.ssh $userHome/.ssh/authorized_keys
+	chmod 0600 $userHome/.ssh/"$userName"_rsa
 
+	# Move the private key
+	cp $userHome/.ssh/"$userName"_rsa /home/zeus/.
+
+	# Add permissions to allow RSA key download
+	chmod o+rwx /home/zeus/"$userName"_rsa
 done
 
 mount -a
