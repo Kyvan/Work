@@ -14,7 +14,6 @@ for (( i = 0 ; i < $numUser ; i++ )) ; do
 
 	# Makes variables for user home directory and UID
 	userHome="/app/$userName"
-	userID=`grep $userName /etc/passwd | awk -F \: '{ print $3 }'`
 
 	# Adds users
 	adduser $userName -md /app/$userName -G sftpUsers
@@ -32,7 +31,7 @@ for (( i = 0 ; i < $numUser ; i++ )) ; do
 	read -p "What's the IP for the server? " serverIP
 
 	# Adds the line to /etc/fstab to automount the shared drive on startup
-	echo -e "//$serverIP/DataDump $userHome/upload cifs user,rw,uid=$userID,username=$userName,password=userPass 0 0" >> /etc/fstab
+	echo '\\'$serverIP\DataDump $userHome/upload cifs user,rw,uid=`grep $userName /etc/passwd | awk -F \: '{ print $3 }'`,username=$userName,password=$userPass 0 0 >> /etc/fstab
 
 	# Generates the RSA key for the user
 	ssh-keygen -t rsa -N "" -f $userHome/.ssh/"$userName"_rsa
