@@ -13,11 +13,11 @@ for (( i = 0 ; i < $numUser ; i++ )) ; do
 	read -p "What's the password? " userPass
 
 	# Makes variables for user home directory and UID
-	userHome="/sftp/test/$userName"
+	userHome="/app/$userName"
 	userID=`grep $userName /etc/passwd | awk -F \: '{ print $3 }'`
 
 	# Adds users
-	adduser $userName -md /sftp/test/$userName -G SFTPUsers
+	adduser $userName -md /app/$userName -G sftpUsers
 
 	# Change the user home directory owner
 	chown root:root $userHome
