@@ -1,0 +1,268 @@
+
+## Last changed: 2019-03-15 14:27:35 EDT
+version 15.1X49-D70.3;
+system {
+    host-name CSA-Firewall;
+    time-zone EST;
+    root-authentication {
+        encrypted-password "$5$iSJKziFK$kNDhFE9cprFRgAzXQRtskpL.5uHmkK8Ov3FLlA2VmK6";
+    }
+    name-server {
+        192.168.0.10;
+        8.8.8.8;
+        8.8.4.4;
+    }
+    name-resolution {
+        no-resolve-on-input;
+    }
+    services {
+        ssh;
+        xnm-clear-text;
+        dhcp-local-server {
+            group csa-dhcp {
+                interface ge-0/0/1.0;
+            }
+        }
+        web-management {
+            http;
+            https {
+                system-generated-certificate;
+            }
+            session {
+                idle-timeout 60;
+            }
+        }
+    }
+    syslog {
+        archive size 100k files 3;
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+    max-configurations-on-flash 5;
+    max-configuration-rollbacks 5;
+    license {
+        autoupdate {
+            url https://ae1.juniper.net/junos/key_retrieval;
+        }
+    }
+    ntp {
+        server time.nrc.ca;
+    }
+}
+security {
+    ike {
+        proposal Phase1-Proposal {
+            authentication-method pre-shared-keys;
+            dh-group group2;
+            authentication-algorithm sha1;
+            encryption-algorithm aes-256-cbc;
+            lifetime-seconds 28800;
+        }
+        policy Phase1-Policy {
+            mode main;
+            proposals Phase1-Proposal;
+            pre-shared-key ascii-text "$9$9ZDMpBRKM8Vs2k.n9ApEheKMWLxwsgDHqWLNbwYaJF36CORrlMW8x-VbYoGq.";
+        }
+        gateway DNS_Tunnel {
+            ike-policy Phase1-Policy;
+            address 148.59.149.10;
+            external-interface ge-0/0/5.0;
+        }
+    }
+    ipsec {
+        proposal Phase2-Proposal {
+            protocol esp;
+            authentication-algorithm hmac-sha1-96;
+            encryption-algorithm aes-256-cbc;
+            lifetime-seconds 28800;
+        }
+        policy Phase2-Policy {
+            perfect-forward-secrecy {
+                keys group2;
+            }
+            proposals Phase2-Proposal;
+        }
+        vpn DNS-Cloud {
+            bind-interface st0.0;
+            ike {
+                gateway DNS_Tunnel;
+                ipsec-policy Phase2-Policy;
+            }
+            establish-tunnels immediately;
+        }
+    }
+    screen {
+        ids-option untrust-screen {
+            icmp {
+                ping-death;
+            }
+            ip {
+                source-route-option;
+                tear-drop;
+            }
+            tcp {
+                syn-flood {
+                    alarm-threshold 1024;
+                    attack-threshold 200;
+                    source-threshold 1024;
+                    destination-threshold 2048;
+                    timeout 20;
+                }
+                land;
+            }
+        }
+    }
+    nat {
+        source {
+            rule-set nsw_srcnat {
+                from zone Internal;
+                to zone Internet;
+                rule nsw-src-interface {
+                    match {
+                        source-address 0.0.0.0/0;
+                        destination-address 0.0.0.0/0;
+                    }
+                    then {
+                        source-nat {
+                            interface;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    policies {
+        from-zone Internal to-zone Internet {
+            policy All_Internal_Internet {
+                match {
+                    source-address addr_192_168_0_0_24;
+                    destination-address any;
+                    application any;
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+        from-zone Internet to-zone Internal {
+            policy Cloud-to-Office {
+                match {
+                    source-address DNS;
+                    destination-address addr_192_168_0_0_24;
+                    application any;
+                }
+                then {
+                    permit;
+                }
+            }
+        }
+    }
+    zones {
+        security-zone Internal {
+            address-book {
+                address addr_192_168_0_0_24 192.168.0.0/24;
+            }
+            interfaces {
+                ge-0/0/1.0 {
+                    host-inbound-traffic {
+                        system-services {
+                            ping;
+                            dhcp;
+                            http;
+                            https;
+                            ssh;
+                            dns;
+                        }
+                    }
+                }
+            }
+        }
+        security-zone Internet {
+            address-book {
+                address DNS 10.200.22.31/32;
+            }
+            interfaces {
+                ge-0/0/5.0 {
+                    host-inbound-traffic {
+                        system-services {
+                            dhcp;
+                            https;
+                            dns;
+                            http;
+                            ssh;
+                            ping;
+                        }
+                    }
+                }
+                st0.0 {
+                    host-inbound-traffic {
+                        system-services {
+                            all;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+interfaces {
+    ge-0/0/1 {
+        unit 0 {
+            family inet {
+                address 192.168.0.50/24;
+            }
+        }
+    }
+    ge-0/0/5 {
+        unit 0 {
+            family inet {
+                dhcp-client;
+            }
+        }
+    }
+    st0 {
+        unit 0 {
+            family inet;
+        }
+    }
+}
+routing-options {
+    static {
+        route 10.200.22.0/24 next-hop st0.0;
+    }
+}
+protocols {
+    l2-learning {
+        global-mode switching;
+    }
+}
+access {
+    address-assignment {
+        pool csa-dhcp-pool {
+            family inet {
+                network 192.168.0.0/24;
+                range csa-dhcp-range {
+                    low 192.168.0.100;
+                    high 192.168.0.254;
+                }
+                dhcp-attributes {
+                    name-server {
+                        8.8.8.8;
+                        8.8.4.4;
+                    }
+                    router {
+                        192.168.0.50;
+                    }
+                }
+            }
+        }
+    }
+}
