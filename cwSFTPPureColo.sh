@@ -1,4 +1,4 @@
-#!/bin/bash -ux
+#!/bin/bash -u
 
 # Asks how many users are being created
 read -p "How many users are you making? " numUser
@@ -21,9 +21,9 @@ for (( i = 0 ; i < $numUser ; i++ )) ; do
         # Change the user home directory owner
         chown root:root $userHome
 
- 				# Fix permissions for user home directory
-			  chmod 0755 $userHome
-			
+        # Fix permissions for user home directory
+        chmod 0755 $userHome
+
         # Sets the password for the newly created user
         echo $userPass | passwd $userName --stdin
 
@@ -48,10 +48,10 @@ for (( i = 0 ; i < $numUser ; i++ )) ; do
         chmod 0600 $userHome/.ssh/"$userName"_rsa
 
         # Move the private key
-        cp $userHome/.ssh/"$userName"_rsa /home/zeus/.
+        cp $userHome/.ssh/"$userName"_rsa /home/`who | awk '{print $1}'`/.
 
         # Add permissions to allow RSA key download
-        chmod o+rwx /home/zeus/"$userName"_rsa
+        chmod o+rwx /home/`who | awk '{print $1}'`/"$userName"_rsa
 done
 
 mount -a

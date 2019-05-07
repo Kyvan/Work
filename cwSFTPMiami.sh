@@ -47,11 +47,11 @@ for (( i = 0 ; i < $numUser ; i++ )) ; do
         chmod 0700 $userHome/.ssh $userHome/.ssh/authorized_keys
         chmod 0600 $userHome/.ssh/"$userName"_rsa
 
-        # Move the private key
-        cp $userHome/.ssh/"$userName"_rsa /home/almond/.
+				# Move the private key
+        cp $userHome/.ssh/"$userName"_rsa /home/`who | awk '{print $1}'`/.
 
         # Add permissions to allow RSA key download
-        chmod o+rwx /home/almond/"$userName"_rsa
+        chmod o+rwx /home/`who | awk '{print $1}'`/"$userName"_rsa
 done
 
 mount -a
