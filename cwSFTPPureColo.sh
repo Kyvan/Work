@@ -21,6 +21,9 @@ for (( i = 0 ; i < $numUser ; i++ )) ; do
         # Change the user home directory owner
         chown root:root $userHome
 
+ 				# Fix permissions for user home directory
+			  chmod 0755 $userHome
+			
         # Sets the password for the newly created user
         echo $userPass | passwd $userName --stdin
 
