@@ -18,7 +18,7 @@ rsyslog-mail.sh
 ServerSetup.sh
 	
 	It worked fine on CentOS 7.x when installing PLESK, don't remember if I used it for testing phpMyAdmin installation or not. :D
-	It has not yet been tested for anything on CentOS 6.x, but it should be okay.
+	Not gonna be tested on CentOS 6.x since it's too old now
   
 Running the Script:
 
