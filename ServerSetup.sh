@@ -1,16 +1,16 @@
 #!/bin/bash -u
 
-#########################################################################################
+#########################################################
 #				   Made by Kyvan Emami	   			  	#
 #				  DATE:	   May 12th, 2017  			  	#
 #				Script to setup Linux Boxes				#
 #				    Services include:	   			  	#
-#					  HTTPD		   			  	#
-#					   PHP		   			  	#
-#					  MySQL		   			  	#
-#					  Plesk		   			  	#
-#					phpMyAdmin	   			  	#
-#########################################################################################
+#					  HTTPD		   					  	#
+#					   PHP		   					  	#
+#					  MySQL		   					  	#
+#					  Plesk		   					  	#
+#					phpMyAdmin	 		  			  	#
+#########################################################
 
 # Variables for Version of CentOS, MAC address of the interface, name of the interface
 # There are 2 variables for the interface name (1 for CentOS 6.x and 1 for CentOS 7.x)
