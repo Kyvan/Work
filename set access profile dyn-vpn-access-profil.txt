@@ -1,0 +1,28 @@
+set access profile dyn-vpn-access-profile client client1 firewall-user password "DNSt3c4!"
+set access profile dyn-vpn-access-profile client client2 firewall-user password "DNSt3c4!"
+set access profile dyn-vpn-access-profile address-assignment pool dyn-vpn-address-pool
+set access address-assignment pool dyn-vpn-address-pool family inet network 10.10.10.0/24
+set access address-assignment pool dyn-vpn-address-pool family inet xauth-attributes primary-dns 192.168.69.1/32
+set access firewall-authentication web-authentication default-profile dyn-vpn-access-profile
+set security ike policy ike-dyn-vpn-policy mode aggressive
+set security ike policy ike-dyn-vpn-policy proposal-set standard
+set security ike policy ike-dyn-vpn-policy pre-shared-key ascii-text "$ABC789"
+set security ike gateway dyn-vpn-local-gw ike-policy ike-dyn-vpn-policy
+set security ike gateway dyn-vpn-local-gw dynamic hostname dynvpn
+set security ike gateway dyn-vpn-local-gw dynamic connections-limit 10
+set security ike gateway dyn-vpn-local-gw dynamic ike-user-type group-ike-id
+set security ike gateway dyn-vpn-local-gw external-interface ge-0/0/5.0
+set security ike gateway dyn-vpn-local-gw aaa access-profile dyn-vpn-access-profile
+set security ipsec policy ipsec-dyn-vpn-policy proposal-set standard
+set security ipsec vpn dyn-vpn ike gateway dyn-vpn-local-gw
+set security ipsec vpn dyn-vpn ike ipsec-policy ipsec-dyn-vpn-policy
+set security policies from-zone untrust to-zone trust policy dyn-vpn-policy match source-address any
+set security policies from-zone untrust to-zone trust policy dyn-vpn-policy match destination-address any
+set security policies from-zone untrust to-zone trust policy dyn-vpn-policy match application any
+set security policies from-zone untrust to-zone trust policy dyn-vpn-policy then permit tunnel ipsec-vpn dyn-vpn
+set security dynamic-vpn access-profile dyn-vpn-access-profile
+set security dynamic-vpn clients all remote-protected-resources 10.0.0.0/8
+set security dynamic-vpn clients all remote-exceptions 0.0.0.0/0
+set security dynamic-vpn clients all ipsec-vpn dyn-vpn
+set security dynamic-vpn clients all user client1
+set security dynamic-vpn clients all user client2
