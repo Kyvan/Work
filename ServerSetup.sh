@@ -14,10 +14,10 @@
 
 # Variables for Version of CentOS, MAC address of the interface, name of the interface
 # There are 2 variables for the interface name (1 for CentOS 6.x and 1 for CentOS 7.x)
-#version="$(grep -o "[[:digit:]]" /etc/centos-release | head -1)"
-#mac="$(ip add | grep 'link/ether' | awk '{print $2}')"
-#intName7="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
-#intName6="$(ip add | grep eth | awk '{print $2}' | awk -F \: '{print $1}')"
+version="$(grep -o "[[:digit:]]" /etc/centos-release | head -1)"
+mac="$(ip add | grep 'link/ether' | awk '{print $2}')"
+intName7="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
+intName6="$(ip add | grep eth | awk '{print $2}' | awk -F \: '{print $1}')"
 
 # Using sed to replace and add lines in POSTFIX to relay to IronPort
 sed -i "116s/localhost/all/" /etc/postfix/main.cf
