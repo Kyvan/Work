@@ -1,13 +1,13 @@
-# Configure / Users / Access Profile
-set access profile dyn-vpn-access-profile client client1 firewall-user password "DNSt3c4!"
-set access profile dyn-vpn-access-profile client client2 firewall-user password "DNSt3c4!"
-set access profile dyn-vpn-access-profile address-assignment pool dyn-vpn-address-pool
-
 # Configure / Network / DHCP / DHCP Server 
 set access address-assignment pool dyn-vpn-address-pool family inet network 10.100.69.0/24
 set access address-assignment pool dyn-vpn-address-pool family inet range range1 low 10.100.69.69
 set access address-assignment pool dyn-vpn-address-pool family inet range range1 high 10.100.69.169
 set access address-assignment pool dyn-vpn-address-pool family inet xauth-attributes primary-dns 192.168.69.1/32
+
+# Configure / Users / Access Profile
+set access profile dyn-vpn-access-profile client client1 firewall-user password "DNSt3c4!"
+set access profile dyn-vpn-access-profile client client2 firewall-user password "DNSt3c4!"
+set access profile dyn-vpn-access-profile address-assignment pool dyn-vpn-address-pool
 
 # Configure / Users / FW Authentication
 set access firewall-authentication web-authentication default-profile dyn-vpn-access-profile
@@ -41,3 +41,10 @@ set security dynamic-vpn clients all remote-exceptions 0.0.0.0/0
 set security dynamic-vpn clients all ipsec-vpn dyn-vpn
 set security dynamic-vpn clients all user client1
 set security dynamic-vpn clients all user client2
+
+
+
+1) Missing dynamic hostname for IKE gateway remoteVPN-gateway for ipsec_vpn remoteVPN-VPN
+2) Unable to access attribute as a string
+3) Missing xauth access profile for IKE gateway remoteVPN-gateway for ipsec_vpn remoteVPN-VPN
+4) configuration check-out failed
