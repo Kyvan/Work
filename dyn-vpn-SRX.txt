@@ -34,6 +34,9 @@ set security policies from-zone untrust to-zone trust policy dyn-vpn-policy matc
 set security policies from-zone untrust to-zone trust policy dyn-vpn-policy match application any
 set security policies from-zone untrust to-zone trust policy dyn-vpn-policy then permit tunnel ipsec-vpn dyn-vpn
 
+
+
+#### Issue is with the configs below ####
 # Configure / Security Services / IPsec VPN / Dynamic VPN
 set security dynamic-vpn access-profile dyn-vpn-access-profile
 set security dynamic-vpn clients all remote-protected-resources 10.0.0.0/8
@@ -44,7 +47,19 @@ set security dynamic-vpn clients all user client2
 
 
 
-1) Missing dynamic hostname for IKE gateway remoteVPN-gateway for ipsec_vpn remoteVPN-VPN
-2) Unable to access attribute as a string
-3) Missing xauth access profile for IKE gateway remoteVPN-gateway for ipsec_vpn remoteVPN-VPN
-4) configuration check-out failed
+[edit security ike gateway dyn-vpn-local-gw aaa]
+  'access-profile'
+    Unable to access attribute as a string
+[edit security ike gateway dyn-vpn-local-gw]
+  'aaa'
+    Missing xauth access profile for IKE gateway dyn-vpn-local-gw for ipsec_vpn dyn-vpn
+error: configuration check-out failed
+
+
+
+delete security dynamic-vpn access-profile dyn-vpn-access-profile
+delete security dynamic-vpn clients all remote-protected-resources 10.0.0.0/8
+delete security dynamic-vpn clients all remote-exceptions 0.0.0.0/0
+delete security dynamic-vpn clients all ipsec-vpn dyn-vpn
+delete security dynamic-vpn clients all user client1
+delete security dynamic-vpn clients all user client2
