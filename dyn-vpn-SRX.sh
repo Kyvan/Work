@@ -117,7 +117,4 @@ Example SRX Config
   set security dynamic-vpn clients all user client1
 
 
-  delete security policies from-zone untrust to-zone trust policy DYN-VPN match source-address any
-  delete security policies from-zone untrust to-zone trust policy DYN-VPN match destination-address any
-  delete security policies from-zone untrust to-zone trust policy DYN-VPN match application any
-  delete security policies from-zone untrust to-zone trust policy DYN-VPN then permit tunnel ipsec-vpn DYN-VPN-IPSEC
+  delete security policies from-zone untrust to-zone trust policy DYN-VPN
