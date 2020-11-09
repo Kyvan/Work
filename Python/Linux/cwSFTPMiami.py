@@ -86,11 +86,6 @@ def createSFTPUser():
         print ('User has been created and is ready to be used.')
         sys.exit(0)
 
-#userChoice = input('What are you looking forward to do? ')
-#createSFTPUser()
-#creatingRSAKeys()
-#settingMountPoints()
-
 userChoice=True
 while userChoice:
     print ("""
@@ -108,6 +103,6 @@ while userChoice:
         settingMountPoints() 
     elif userChoice == "4":
         print("\n Goodbye")
-        sys.ext(0)
+        sys.exit(0)
     elif userChoice != "":
         print("\n Not Valid Choice Try again") 
