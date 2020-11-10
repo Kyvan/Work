@@ -9,14 +9,14 @@ def settingMountPoints():
     username = input("Which username are you making the RSA key for? ")
 
     # Variables
-    uploadDir = '/app/'+username+'upload'
+    uploadDir = '/app/'+username+'/upload'
 
     # Get the password
     password = getpass.getpass()
     
     # Make upload and change ownership
     subprocess.run(['mkdir', '-p', uploadDir])
-    subprocess.run(['chwon', username+':'+username, uploadDir+'upload'])
+    subprocess.run(['chwon', username+':'+username, uploadDir])
 
     # Getting server IP
     serverIP = input('What iss the IP for the server? ')
