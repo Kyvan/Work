@@ -45,7 +45,7 @@ def creatingRSAKeys():
     subprocess.run(['mv', rsaDir+username+'_rsa', "/home/`who | awk '{print $1}'`/."])
     subprocess.run(['chmod', 'o+rwx', "/home/`who | awk '{print $1}'`/"+username+"_rsa"])
 
-    # Checks to see if RSA keys are needed
+    # Checks to see if Mounting is needed
     mountNeeded = input("Do you need to mount a drive for this user? (Yes/No) ")
     if mountNeeded.lower() == "yes" or mountNeeded.lower() == "y":
     	settingMountPoints()
