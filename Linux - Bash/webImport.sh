@@ -1,14 +1,21 @@
 #!/bin/bash -u
 
-# Subscription creation
-plesk bin subscription --create mf-dev.ca -owner Mediaforce -service-plan\
-"Default Domain" -ip 148.59.149.43 -login mediaforce -passwd "AwfulComprise03"
+read -p "What is the parent domain? " pDomain
 
+if [ $pDomain == mf-tested.com ] ; then
+    # Subscription creation
+    plesk bin subscription --create $pDomain -owner Mediaforce -service-plan\
+    "Default Domain" -ip 148.59.149.43 -login mediaforce-tested -passwd "AwfulComprise03#"
+elif [ $pDomain == mf-dev.ca ] ; then
+    # Subscription creation
+    plesk bin subscription --create $pDomain -owner Mediaforce -service-plan\
+    "Default Domain" -ip 148.59.149.43 -login mediaforce-dev -passwd "ShoutOrganism03#"
+fi
 
 while read line ; do
 
     # Site creation
-    plesk bin site --create $line -webspace-name mf-dev.ca -www-root /$line
+    plesk bin site --create $line -webspace-name $pDomain -www-root /$line
 
     # Database variables
     dbName=$(grep 'DB_NAME' $line/wp-config.php | awk '{print $3}' | awk -F \' '{print $2}')
