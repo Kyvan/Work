@@ -22,5 +22,5 @@ while read line ; do
     mysqldump -u$dbUser -p$dbPass $dbName >> $line/$line.sql
     
     # gzip archive of website
-    tar -czf $line/$line.tar.gz $line/* $line/.??*
+    tar -xzf /app/$line.tar.gz -C /var/www/vhosts/$line/* $line/.??*
 done < mf-dev.txt
