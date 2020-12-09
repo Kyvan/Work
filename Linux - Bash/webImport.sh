@@ -2,7 +2,7 @@
 
 # Subscription creation
 plesk bin subscription --create mf-dev.ca -owner Mediaforce -service-plan\
-"Default Domain" -ip 148.59.149.x -login mediaforce -passwd "AwfulComprise03"
+"Default Domain" -ip 148.59.149.43 -login mediaforce -passwd "AwfulComprise03"
 
 
 while read line ; do
