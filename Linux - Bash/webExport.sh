@@ -8,7 +8,7 @@ while read line ; do
     dbPass=$(grep 'DB_PASSWORD' $line/wp-config.php | awk '{print $3}' | awk -F \' '{print $2}')
 
     # SQL dump    
-    mysqldump -u$dbUser -p\'$dbPass\' $dbName >> $line/$line.sql
+    mysqldump -u$dbUser -p$dbPass $dbName >> $line/$line.sql
     
     # gzip archive of website
     tar -czf $line/$line.tar.gz $line/* $line/.??*

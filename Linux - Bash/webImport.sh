@@ -19,7 +19,7 @@ while read line ; do
     plesk bin database --create $dbName -domain $line -type mysql
 
     # SQL dump    
-    mysqldump -u$dbUser -p\'$dbPass\' $dbName >> $line/$line.sql
+    mysqldump -u$dbUser -p$dbPass $dbName >> $line/$line.sql
     
     # gzip archive of website
     tar -czf $line/$line.tar.gz $line/* $line/.??*
