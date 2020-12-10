@@ -15,5 +15,5 @@ find /app/mysql.backup/ -ctime +3 -type d -exec rm -rf {} \;
 
 
 
-
-0       1       *       *       *       /sbin/pleskBK
+# CronJob
+# 0       1       *       *       *       /sbin/pleskBK
