@@ -1,13 +1,18 @@
-# Installing iptables
-yum install -y iptables
+#!/bin/bash -u
 
-# Disable firewalld
-systemctl stop firewalld
-systemctl disable firewalld
-systemctl start iptables
-systemctl enable iptables
+read -p "How many rules do you need to add? " ruleNumbers
 
 # Setting up the rules
-iptables -A INPUT -p tcp --dport 5999 -s 172.16.31.167 -j REJECT
-iptables -A INPUT -p tcp --dport 5999 -s 172.16.31."$MN" -j REJECT
-iptables -A INPUT -p tcp --dport 5999 -j ACCEPT
+for (( i = 0 ; i < $ruleNumbers ; i++ )); do
+    # Asking for Port numbers and Protocols
+    read -p "What's the port number you need to allow? " portNum
+    read -p "Is it TCP or UDP? " portProto
+    if [ ${portProto,,} == "tcp" || ${portProto,,} == "t" ] ; then
+        firewall-cmd --permanent --add-port=$portNum/tcp
+    elif [ ${portProto,,} == "udp" || ${portProto,,} == "u" ] ; then
+        firewall-cmd --permanent --add-port=$portNum/udp
+    else
+        echo "That is not a valid Protocol, please choose between TCP or UDP only"
+        exit 1
+    fi
+do
