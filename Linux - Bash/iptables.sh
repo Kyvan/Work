@@ -15,4 +15,4 @@ for (( i = 0 ; i < $ruleNumbers ; i++ )); do
         echo "That is not a valid Protocol, please choose between TCP or UDP only"
         exit 1
     fi
-do
+done
