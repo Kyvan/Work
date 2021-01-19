@@ -9,3 +9,9 @@ Connects to Microsoft 365 (formerly Office 365) and sets DKIM for the tennant ba
 
 softwareInstalled.ps1
 Gets trigered based on eventlogs when a new software is installed and sends an email with information about the software that was installed and who authorized the install
+
+disablePasswordExpirationForAll.ps1
+Disables passwords expiration for all users in an organization
+
+disablePasswordExpiration.ps1
+Disables password expiration for an individual user
