@@ -15,3 +15,6 @@ Disables passwords expiration for all users in an organization
 
 disablePasswordExpiration.ps1
 Disables password expiration for an individual user
+
+permAndOwnershipTakeOver.ps1
+Script to take ownership and change permissions of a file/folder
