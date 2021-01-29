@@ -1,6 +1,3 @@
-enableDKIM.ps1
-Connects to Microsoft 365 (formerly Office 365) and enables DKIM for the tennant based on user input
-
 FTPDownload.ps1
 Connects to FTP server and downloads the two newest files based on time
 
