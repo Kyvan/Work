@@ -16,20 +16,20 @@
 # There are 2 variables for the interface name (1 for CentOS 6.x and 1 for CentOS 7.x)
 version="$(grep -o "[[:digit:]]" /etc/centos-release | head -1)"
 mac="$(ip add | grep 'link/ether' | awk '{print $2}')"
-intName7="$(ip add | grep ens | awk '{print $2}' | awk -F \: '{print $1}')"
-intName6="$(ip add | grep eth | awk '{print $2}' | awk -F \: '{print $1}')"
+intName7="$(ip add | grep ens | awk '{print $2}' | awk -F : '{print $1}')"
+intName6="$(ip add | grep eth | awk '{print $2}' | awk -F : '{print $1}')"
 
 # Function to make users
 function userCreation {
 	# A for loop that makes the number of users specified based on the previous question
-	for (( i = 0 ; i < $userNum ; i++ )) ; do
+	for (( i = 0 ; i < "$userNum" ; i++ )) ; do
 		# Asks for the username and then adds the user
-		read -p "What is the username for the new user? " user
-		useradd $user
+		read -rp "What is the username for the new user? " user
+		useradd "$user"
 
 		# Asks for the password and then adds the password for the user
-		read -p "What is the password for the new user? " pass
-		echo $user:$pass | chpasswd
+		read -rp "What is the password for the new user? " pass
+		echo "$user":"$pass" | chpasswd
 
 		# Adds the new user to the SUDOERS file so it has SUDO access
 		sed -i "92i $user	ALL=(ALL)	ALL" /etc/sudoers
@@ -44,7 +44,7 @@ sed -i "318i relayhost = 64.26.137.70" /etc/postfix/main.cf
 #\cp /root/Work/snmpd /etc/snmp/snmpd.conf
 
 # Asks for the community name to be used for SNMP
-read -p "What is your Community Name for this server? " comName
+read -rp "What is your Community Name for this server? " comName
 sed -i "s/PL#KSN!X1/$comName/" /etc/snmp/snmpd.conf
 
 # Restarts POSTFIX and SNMPD for the changes to take effect
@@ -52,37 +52,37 @@ systemctl restart postfix
 systemctl restart snmpd
 
 # Ask how many users needs to be made
-read -p "How many users do you need to make (enter in number format)? " userNum
+read -rp "How many users do you need to make (enter in number format)? " userNum
 
 # Calls the functiontion to make users
 userCreation userNum
 
 # Asks for the hostname and changes the hostname for the box
-read -p "What is the hostname? " host
+read -rp "What is the hostname? " host
 sed -i "s/$(cat /etc/hostname)/$host/" /etc/hostname
 
 # Asks for the Networkign information (net mask, IP address, gateway, broadcast, DNS1, and DNS2)
-read -p "What is your Net Mask? " netMask
-read -p "What is your IP address? " ipADD
-read -p "What is your Gateway? " gtwy
-read -p "What is your broadcast? " bcast
-read -p "What is your first DNS IP? " dns1
-read -p "What is your second DNS IP? " dns2
+read -rp "What is your Net Mask? " netMask
+read -rp "What is your IP address? " ipADD
+read -rp "What is your Gateway? " gtwy
+read -rp "What is your broadcast? " bcast
+read -rp "What is your first DNS IP? " dns1
+read -rp "What is your second DNS IP? " dns2
 
 # Function to fix the networking issue caused by cloning the box (centOS 7.x)
 function networkFixer7 {
 	# Renames the interface config file name to the new one (needed because of clonign issues)
-	mv /etc/sysconfig/network-scripts/ifcfg-eno16777984 /etc/sysconfig/network-scripts/ifcfg-$intName
+	mv /etc/sysconfig/network-scripts/ifcfg-eno16777984 /etc/sysconfig/network-scripts/ifcfg-"$intName7"
 
 	# Replaces the old information with the new ones optained from the question asked earlier
-	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName7
-	sed -i "s/eno16777984/$intName7/g" /etc/sysconfig/network-scripts/ifcfg-$intName7
-	sed -i "s/10.22.1.172/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName7
-	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-$intName7
-	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName7
-	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName7
-	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName7
-	sed -i "s/10.22.1.81/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName7
+	sed -i "22i HARDWARE=$mac" /etc/sysconfig/network-scripts/ifcfg-"$intName7"
+	sed -i "s/eno16777984/$intName7/g" /etc/sysconfig/network-scripts/ifcfg-"$intName7"
+	sed -i "s/10.22.1.172/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-"$intName7"
+	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-"$intName7"
+	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-"$intName7"
+	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-"$intName7"
+	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-"$intName7"
+	sed -i "s/10.22.1.81/$dns2/" /etc/sysconfig/network-scripts/ifcfg-"$intName7"
 
 	# Restart NetworkManager for the changes to take effect
 	systemctl restart NetworkManager
@@ -91,19 +91,19 @@ function networkFixer7 {
 # Function to fix the networking issue caused by cloning the box (centOS 6.x)
 function networkFixer6 {
 	# Renames the interface config file name to the new one (needed because of clonign issues)
-	mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-$intName
+	mv /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-"$intName6"
 
 	# Replaces the old information with the new ones optained from the question asked earlier
-	sed -i '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-$intName6
-	sed -i "6i HWADDR=$mac" /etc/sysconfig/network-scripts/ifcfg-$intName6
-	sed -i "s/eth0/$intName6/g" /etc/sysconfig/network-scripts/ifcfg-$intName6
-	sed -i "s/10.22.1.171/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-$intName6
-	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-$intName6
-	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-$intName6
-	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-$intName6
-	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-$intName6
-	sed -i "s/10.22.1.81/$dns2/" /etc/sysconfig/network-scripts/ifcfg-$intName6
-	sed -i '10s/yes/no/' /etc/sysconfig/network-scripts/ifcfg-$intName6
+	sed -i '/HWADDR/d' /etc/sysconfig/network-scripts/ifcfg-"$intName6"
+	sed -i "6i HWADDR=$mac" /etc/sysconfig/network-scripts/ifcfg-"$intName6"
+	sed -i "s/eth0/$intName6/g" /etc/sysconfig/network-scripts/ifcfg-"$intName6"
+	sed -i "s/10.22.1.171/$ipADD/" /etc/sysconfig/network-scripts/ifcfg-"$intName6"
+	sed -i "s/10.22.1.1/$gtwy/" /etc/sysconfig/network-scripts/ifcfg-"$intName6"
+	sed -i "s/255.255.255.0/$netMask/" /etc/sysconfig/network-scripts/ifcfg-"$intName6"
+	sed -i "s/10.22.1.255/$bcast/" /etc/sysconfig/network-scripts/ifcfg-"$intName6"
+	sed -i "s/10.22.1.80/$dns1/" /etc/sysconfig/network-scripts/ifcfg-"$intName6"
+	sed -i "s/10.22.1.81/$dns2/" /etc/sysconfig/network-scripts/ifcfg-"$intName6"
+	sed -i '10s/yes/no/' /etc/sysconfig/network-scripts/ifcfg-"$intName6"
 
 	# Stop and Disable NetworkManager and restart network for the changes to tale effect
 	service NetworkManager stop
@@ -112,9 +112,9 @@ function networkFixer6 {
 }
 
 # If statement to check the version of CentOS box and call the correct function to fix netwroking issues
-if (( $version == 6 )) ; then
+if (( "$version" == 6 )) ; then
 	networkFixer6 version intName6 mac ipADD bcast gtwy netMask dns1 dns2
-elif (( $version == 7 )) ; then
+elif (( "$version" == 7 )) ; then
 	networkFixer7 version intName7 mac ipADD bcast gtwy netMask dns1 dns2
 fi
 
@@ -158,10 +158,10 @@ function phpInstall6 {
 
 	# Ask the user for the version of PHP they need to isntall
 	echo -e "Which version of PHP do you want to install?\nPlease put the first to digits without any dots or dashes.\nExample: for version 5.6.XX enter 56"
-	read phpv
+	read -r phpv
 
 	# Enables the repository needed for the version of PHP that needs to be installed
-	yum-config-manager --enable remi-php$phpv
+	yum-config-manager --enable remi-php"$phpv"
 	# Cleans the repositories to get rid of the unused ones, updates the box, and then installs the needed packages
 
 	yum clean all
@@ -195,10 +195,10 @@ function phpInstall7 {
 
 	# Ask the user for the version of PHP they need to isntall
 	echo -e "Which version of PHP do you want to install?\nPlease put the first to digist without any dots or dashes.\nExample: for version 5.6.xx enter 56"
-	read phpv
+	read -r phpv
 
 	# Enables the repository needed for the version of PHP that needs to be installed
-	yum-config-manager --enable remi-php$phpv
+	yum-config-manager --enable remi-php"$phpv"
 
 	# Cleans the repositories to get rid of the unused ones, updates the box, and then installs the needed packages
 	yum clean all
@@ -213,16 +213,16 @@ function phpInstall7 {
 }
 
 # Asks user if they need to install PLESK or phpMyAdmin
-read -p "Are you installing PLESK or phpMyAdmin? (Plesk/PHP) " choice
+read -rp "Are you installing PLESK or phpMyAdmin? (Plesk/PHP) " choice
 
 # An IF statement to check the user's answer to install the appropriate packages
-if [ ${choice,,} == "plesk" ] ; then
+if [ "${choice,,}" == "plesk" ] ; then
 	pleskInstall
-elif [ ${choice,,} == "php" ] ; then
+elif [ "${choice,,}" == "php" ] ; then
 	# A nested IF statement to check the version of CentOS installed and install the appropriate packages based on the version of CentOS
-	if (( $version == 7 )) ; then 
+	if (( "$version" == 7 )) ; then 
 		phpInstall7
-	elif (( $version == 6 )) ; then
+	elif (( "$version" == 6 )) ; then
 		phpInstall6
 	fi
 else

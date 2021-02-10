@@ -5,7 +5,7 @@ rootDir="/var/www/vhosts/eastrock.com/httpdocs"
 tarName="eastrockClean.tar.gz"
 
 # Goes to website root directory
-cd $rootDir
+cd $rootDir || exit
 
 # Suspend the domain
 plesk bin domain --suspend eastrock.com
@@ -15,13 +15,13 @@ ps aux | grep  webmas | grep -v color | awk '{ print $2 }' | xargs kill -9
 
 # Loop to remove all files except the tar file
 for fileName in * ; do
-    if [[ $fileName != $tarName ]] ; then
-        \rm -rf $fileName
+    if [[ "$fileName" != "$tarName" ]] ; then
+        \rm -rf "$fileName"
     fi
 done
 
 # Untaring the website
-tar xzf $tarName
+tar xzf "$tarName"
 
 # Changing the permissions/ownership
 chown -R webmaster:psacln ./* ./.??*

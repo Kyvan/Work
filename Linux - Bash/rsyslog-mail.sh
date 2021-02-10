@@ -1,14 +1,14 @@
 #!/bin/bash -u
 
-read -p "What is the domain name of the rsyslog server? " dsn
-read -p "Who should receive the emails? " name
-read -p "What is the destination IP address or hotname? " iph
-read -p "What is the destination port number? " port
+read -rp "What is the domain name of the rsyslog server? " dsn
+read -rp "Who should receive the emails? " name
+read -rp "What is the destination IP address or hotname? " iph
+read -rp "What is the destination port number? " port
 
 function syslogConfig() {
 	sed -i "48i *.*	@@$iph:$port" /etc/rsyslog.conf
 
-	echo -e "module(load="builtin:ommail" ...)\n" > /etc/rsyslog.d/remote.conf
+	echo -e "module(load='builtin:ommail' ...)\n" > /etc/rsyslog.d/remote.conf
 	sed -i "2i \$ModLoad ommail" /etc/rsyslog.d/remote.conf
 	sed -i "3i \ " /etc/rsyslog.d/remote.conf
 	sed -i "4i \$ActionMailSMTPServer mail.$dsn" /etc/rsyslog.d/remote.conf

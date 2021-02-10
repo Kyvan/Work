@@ -1,10 +1,10 @@
 #!/bin/bash -u
 
 function syslogConfig() {
-	read -p "How manu clients are connecting to this SYSLOG server? " num
-	for ( i = 0 ; i < $num ; i++ ) ; do
-		read -p "What is the IP of the client sending the logs? " cip
-		read -p "What is the client hostname? " chn
+	read -rp "How manu clients are connecting to this SYSLOG server? " num
+	for (( i = 0 ; i < "$num" ; i++ )) ; do
+		read -rp "What is the IP of the client sending the logs? " cip
+		read -rp "What is the client hostname? " chn
 		echo -e "\$ModLoad imtcp\n" >> /etc/rsyslog.conf
 		sed -i "2i \ " /etc/rsyslog.conf
 		sed -i "3i \$InputTCPServerRun 514" /etc/rsyslog.conf
