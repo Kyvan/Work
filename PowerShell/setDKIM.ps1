@@ -11,7 +11,6 @@ Write-Host "host name for the DNS records are 'selector1._domainkey' and 'select
 Write-Host "Please wait for about 5 to 10 minutes after making the new DNS records before moving forward to ensure DNS has propegated."
 Pause
 
-# Only run this after the DNS records from the steps above are added
 Set-DkimSigningConfig -Identity $domainName -Enabled $true
 Pause
 
