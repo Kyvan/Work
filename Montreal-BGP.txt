@@ -1,0 +1,63 @@
+set protocols bgp traceoptions file bgp.log
+set protocols bgp traceoptions file size 10m
+set protocols bgp traceoptions file files 10
+set protocols bgp traceoptions file world-readable
+set protocols bgp traceoptions flag update detail
+set protocols bgp traceoptions flag general
+set protocols bgp group cogeco type external
+set protocols bgp group cogeco neighbor 38.122.103.129 export external-announce
+set protocols bgp group cogeco neighbor 38.122.103.129 peer-as 174
+
+set routing-options static route 10.60.1.0/24 reject
+set routing-options static route 10.70.1.0/24 reject
+set routing-options static route 10.80.1.0/29 reject
+set routing-options static route 10.80.1.8/30 reject
+set routing-options static route 10.80.1.12/30 reject
+set routing-options static route 10.80.1.16/28 reject
+set routing-options static route 10.80.1.32/28 reject
+set routing-options static route 10.80.1.48/28 reject
+set routing-options static route 10.80.1.64/29 reject
+set routing-options static route 10.80.1.72/29 reject
+set routing-options static route 158.247.60.0/24 receive
+set routing-options autonomous-system 396477
+
+
+
+traceoptions {
+    file bgp.log size 10m files 10 world-readable;
+    flag update detail;
+    flag general;
+}
+group zayo {
+    type external;
+    neighbor 184.94.101.45 {
+        export external-announce;
+        peer-as 15290;
+    }
+}
+group bell {
+    type external;
+    neighbor 206.47.91.193 {
+        export external-announce;
+        peer-as 577;
+    }
+}
+
+
+route 10.200.20.0/24 reject;
+route 10.200.21.0/24 reject;
+route 10.200.22.0/24 reject;
+route 10.200.23.0/24 reject;
+route 10.200.1.0/24 reject;
+route 148.59.149.0/24 receive;
+route 192.168.5.0/24 next-hop 10.200.22.2;
+route 172.16.121.0/24 next-hop 10.200.21.4;
+route 10.70.1.0/24 next-hop 10.200.21.5;
+route 10.200.27.0/24 next-hop 10.200.20.4;
+route 10.21.1.0/24 next-hop st0.0;
+route 10.22.1.0/24 next-hop st0.0;
+route 10.26.1.0/24 next-hop st0.0;
+route 10.1.20.0/24 next-hop st0.1;
+route 10.16.1.0/24 next-hop st0.0;
+route 148.59.149.176/28 next-hop 148.59.149.174;
+route 204.225.97.0/24 receive;
