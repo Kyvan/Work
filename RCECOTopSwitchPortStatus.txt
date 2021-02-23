@@ -29,13 +29,13 @@
   27      100/1000T  | No        Yes     Up     1000FDx    MDI  off
   28      100/1000T  | No        Yes     Down   1000FDx    MDIX off
   29      100/1000T  | No        Yes     Up     100FDx     MDI  off
-  30      100/1000T  | No        Yes     Down   1000FDx    MDI  off
+  30      100/1000T  | No        Yes     Down   1000FDx    MDI  off - AP
   31      100/1000T  | No        Yes     Down   1000FDx    MDI  off
-  32      100/1000T  | No        Yes     Down   1000FDx    MDI  off
-  33      100/1000T  | No        Yes     Down   1000FDx    MDI  off
+  32      100/1000T  | No        Yes     Down   1000FDx    MDI  off - AP
+  33      100/1000T  | No        Yes     Down   1000FDx    MDI  off - AP
   34      100/1000T  | No        Yes     Down   1000FDx    MDI  off
-  35      100/1000T  | No        Yes     Down   1000FDx    MDI  off
-  36      100/1000T  | No        Yes     Down   1000FDx    MDIX off
+  35      100/1000T  | No        Yes     Down   1000FDx    MDI  off - AP
+  36      100/1000T  | No        Yes     Down   1000FDx    MDIX off - AP
   37      100/1000T  | No        Yes     Down   1000FDx    MDIX off
   38      100/1000T  | No        Yes     Down   1000FDx    MDIX off
   39      100/1000T  | No        Yes     Down   1000FDx    MDI  off
