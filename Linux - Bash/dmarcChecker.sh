@@ -1,7 +1,7 @@
 #!/bin/bash -u
 
 function unZip() {
-    archiveDir="C:\Users\kyvan\OneDrive - dnsnetworks.ca\DMARC"
+    archiveDir="~\OneDrive - dnsnetworks.ca\DMARC"
     cd "$archiveDir" || exit
 
     # Loop to unzip Gzip and Zip reports
@@ -29,7 +29,7 @@ function xmlParser() {
 }
 
 function dmarcReport() {
-    xmlDir="C:\Users\kyvan\OneDrive - dnsnetworks.ca\DMARC\dmarcXML"
+    xmlDir="~\OneDrive - dnsnetworks.ca\DMARC\dmarcXML"
     cd "$xmlDir" || exit
     
     for xmlReports in * ; do
