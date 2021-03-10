@@ -1,7 +1,7 @@
 #!/bin/bash -u
 
-function unZip() {
-    archiveDir="~\OneDrive - dnsnetworks.ca\DMARC"
+function xmlExtracting() {
+    archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC"
     cd "$archiveDir" || exit
 
     # Loop to unzip Gzip and Zip reports
@@ -29,7 +29,7 @@ function xmlParser() {
 }
 
 function dmarcReport() {
-    xmlDir="~\OneDrive - dnsnetworks.ca\DMARC\dmarcXML"
+    xmlDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC\dmarcXML"
     cd "$xmlDir" || exit
     
     for xmlReports in * ; do
@@ -37,22 +37,26 @@ function dmarcReport() {
             if [[ "$ENTITY" = "org_name" ]] || [[ "$ENTITY" = "domain" ]] || [[ "$ENTITY" = "dkim" ]] || [[ "$ENTITY" = "spf" ]] || [[ "$ENTITY" = "source_ip" ]] ; then
                 echo "$ENTITY => $CONTENT"
             fi
-        done < "$xmlReports" >> ../dmarcReport.txt
+        done < "$xmlReports" >> ../dmarcReport+"$( date +%F )".txt
     done
     echo "Report is ready"
 }
 
 echo "What function of the script are you looking to use?"
 echo "1. Generate XML files from reports"
-echo "2. Generate dmarc report based on XML files"
+echo "2. Generate DMARC report based on XML files"
+echo "3. Generate both XML and DMARC reports"
 read -rp "Option: " option
 
 case "$option" in
+    3)
+        echo "Generating both XML and DMARC reports" && xmlExtracting && dmarcReport
+        ;;
     2)
-        echo "Generating the dmarc Reprot" && dmarcReport
+        echo "Generating the DMARC Reprot" && dmarcReport
         ;;
     1)
-        echo "Unziping to generate the XML reports" && unZip
+        echo "Unziping to generate the XML reports" && xmlExtracting
         ;;
     *)
         echo "No action needed, exiting the script"
