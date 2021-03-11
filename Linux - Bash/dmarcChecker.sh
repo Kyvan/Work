@@ -14,10 +14,10 @@ function xmlExtracting() {
     done
 
     # find command to delete Zip and Gzip reports
-    find "$archiveDir" -maxdepth 1 -type f | grep -E '(zip|gz)' | xargs rm -f
+    find . -maxdepth 1 -type f | grep -E '(zip|gz)' | xargs rm -f
 
     # find command to move the XML reports to a different directory
-    find "$archiveDir" -maxdepth 1 -type f | grep -v "txt" | xargs -I {} mv {} dmarcXML/
+    find . -maxdepth 1 -type f | grep -v "txt" | xargs -I {} mv {} dmarcXML/
 
     echo "XML files are ready"
 }
