@@ -42,13 +42,25 @@ function dmarcReport() {
     echo "Report is ready"
 }
 
+function failedDMARCReports() {
+    archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC"
+    cd "$archiveDir" || exit
+
+    grep -B5 -i fail dmarcReport*.txt > dmarcFailedReport.txt
+    echo "Report is ready"
+}
+
 echo "What function of the script are you looking to use?"
 echo "1. Generate XML files from reports"
 echo "2. Generate DMARC report based on XML files"
 echo "3. Generate both XML and DMARC reports"
+echo "4. Generate Failed DMARC report only"
 read -rp "Option: " option
 
 case "$option" in
+    4)
+        echo "Generating failed DMARC reports" && failedDMARCReports
+        ;;
     3)
         echo "Generating both XML and DMARC reports" && xmlExtracting && dmarcReport
         ;;
