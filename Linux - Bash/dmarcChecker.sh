@@ -37,7 +37,7 @@ function dmarcReport() {
             if [[ "$ENTITY" = "org_name" ]] || [[ "$ENTITY" = "domain" ]] || [[ "$ENTITY" = "dkim" ]] || [[ "$ENTITY" = "spf" ]] || [[ "$ENTITY" = "source_ip" ]] ; then
                 echo "$ENTITY => $CONTENT"
             fi
-        done < "$xmlReports" >> ../dmarcReport-"$( date +%F )".txt
+        done < "$xmlReports" >> ../dmarcReport-"$(date +%F)".txt
     done
     echo "Report is ready"
 }
@@ -46,7 +46,7 @@ function failedDMARCReports() {
     archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC"
     cd "$archiveDir" || exit
 
-    grep -B5 -i fail dmarcReport*.txt > dmarcFailedReport.txt
+    grep -B5 -i fail dmarcReport*.txt > dmarcFailedReport-"$(date +%F)".txt
     echo "Report is ready"
 }
 
