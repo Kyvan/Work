@@ -49,7 +49,7 @@ function failedDMARCReports() {
     archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC"
     cd "$archiveDir" || exit
 
-    find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -B5 -i fail {} \; > dmarcFailedReports/dmarcFailedReport-"$(date +%F)".txt
+    find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -B5 -i fail {} \; >> dmarcFailedReports/dmarcFailedReport-"$(date +%F)".txt
     echo "Report is ready"
 }
 
