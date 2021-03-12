@@ -39,6 +39,9 @@ function dmarcReport() {
             fi
         done < "$xmlReports" >> ../dmarcReport-"$(date +%F)".txt
     done
+    
+    find . -maxdepth 1 -type f -iname xml -exec rm -f {} \;
+
     echo "Report is ready"
 }
 
