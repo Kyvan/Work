@@ -23,4 +23,4 @@ while row:
     print(row[0])
     row = cursor.fetchone()
 
-#cnxn.close()
+cnxn.close()
