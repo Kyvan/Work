@@ -37,7 +37,7 @@ function dmarcReport() {
             if [[ "$ENTITY" = "org_name" ]] || [[ "$ENTITY" = "domain" ]] || [[ "$ENTITY" = "dkim" ]] || [[ "$ENTITY" = "spf" ]] || [[ "$ENTITY" = "source_ip" ]] ; then
                 echo "$ENTITY => $CONTENT"
             fi
-        done < "$xmlReports" >> ../dmarcReport-"$(date +%F)".txt
+        done < "$xmlReports" >> ../dmarcReports/dmarcReport-"$(date +%F)".txt
     done
     
     find . -maxdepth 1 -type f -exec rm -f {} \;
@@ -46,10 +46,10 @@ function dmarcReport() {
 }
 
 function failedDMARCReports() {
-    archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC"
+    archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC\dmarcReports"
     cd "$archiveDir" || exit
 
-    find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -B5 -i fail {} \; >> dmarcFailedReports/dmarcFailedReport-"$(date +%F)".txt
+    find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -B5 -i fail {} \; >> ../dmarcFailedReports/dmarcFailedReport-"$(date +%F)".txt
     echo "Report is ready"
 }
 
