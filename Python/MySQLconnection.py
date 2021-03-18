@@ -3,10 +3,10 @@ from mysql.connector.constants import ClientFlag
 
 config = {
     'user': 'Dawn',
-    'password': 'Diesel123',
-    'host': '10.200.21.42',
-    'database': 'delsqlserver',
-#   'port': "1433",
+    'password': 'diesel123',
+    'host': '10.200.21.42\delsqlserver',
+#   'database': '',
+#   'port': "1435",
 #   'client_flags': [ClientFlag.SSL],
 #   'ssl_ca': '/opt/mysql/ssl/ca.pem',
 #   'ssl_cert': '/opt/mysql/ssl/client-cert.pem',
