@@ -1,4 +1,4 @@
-#!/bin/bash -ux
+#!/bin/bash -u
 
 function domainReports() {
     archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC\dmarcFailedReports"
