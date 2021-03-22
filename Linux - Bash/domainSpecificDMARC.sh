@@ -5,7 +5,7 @@ function domainReports() {
     cd "$archiveDir" || exit
     
     find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -A1 -i "$1" {} \; > "$1\\${1}.txt"
-    echo "Report is ready"
+    echo "$1 Report is ready"
 }
 
 while read -r domains ; do
