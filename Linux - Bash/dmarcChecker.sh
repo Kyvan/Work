@@ -112,7 +112,8 @@ function menu() {
 if test "$#" -eq "0" ; then
     menu
 elif test "$#" -eq "1" ; then
-    chosenOption "$1"
+    option="$1"
+    chosenOption "$option"
 else
     echo "For more help, please run $0 --help"
     echo "ERROR: You need either 1 or zero option for the script"
