@@ -99,11 +99,7 @@ function chosenOption() {
 }
 
 function menu() {
-    echo "XML: Generate XML files from reports"
-    echo "Report: Generate DMARC report based on XML files"
-    echo "Failed: Generate Failed DMARC report only"
-    echo "Dreport: Generate domain specific Failed DMARC report"
-    echo "All: Generate XML and DMARC, and failed DMARC reports"
+    options
     read -rp "Which of the above options are you looking to use? $(echo -e '\n> ')" option
 
     chosenOption "$option"
