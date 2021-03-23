@@ -34,7 +34,7 @@ function dmarcReport() {
     
     for xmlReports in * ; do
         while xmlParser ; do
-            if [[ "$ENTITY" = "org_name" ]] || [[ "$ENTITY" = "domain" ]] || [[ "$ENTITY" = "dkim" ]] || [[ "$ENTITY" = "spf" ]] || [[ "$ENTITY" = "source_ip" ]] ; then
+            if [ "$ENTITY" = "org_name" ] || [ "$ENTITY" = "domain" ] || [ "$ENTITY" = "dkim" ] || [ "$ENTITY" = "spf" ] || [ "$ENTITY" = "source_ip" ] ; then
                 echo "$ENTITY => $CONTENT"
             fi
         done < "$xmlReports" >> ../dmarcReports/dmarcReport-"$(date +%F)".txt
@@ -42,7 +42,7 @@ function dmarcReport() {
     
     find . -maxdepth 1 -type f -exec rm -f {} \;
 
-    echo "Report is ready"
+    echo "DMARC report is ready"
 }
 
 function failedDMARCReports() {
@@ -50,7 +50,17 @@ function failedDMARCReports() {
     cd "$archiveDir" || exit
 
     find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -B5 -i fail {} \; >> ../dmarcFailedReports/dmarcFailedReport-"$(date +%F)".txt
-    echo "Report is ready"
+    echo "Failed DMARC report is ready"
+}
+
+function domainReports() {
+    archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC\dmarcFailedReports"
+    cd "$archiveDir" || exit
+    
+    while read -r domains ; do
+        find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -A1 -i "$domains" {} \; > "$domains\\${domains}.txt"
+        echo "$domains Report is ready"
+    done < "c:\\users\\kyvan\\onedrive\\Documents\\git\\Work\\Linux - Bash\\domain.txt"
 }
 
 function options() {
@@ -58,6 +68,7 @@ function options() {
     echo "XML: Generate XML files from reports"
     echo "Report: Generate DMARC report based on XML files"
     echo "Failed: Generate Failed DMARC report only"
+    echo "Dreport: Generate domain specific Failed DMARC report"
     echo "All: Generate XML, DMARC, and failed DMARC reports"
 }
 
@@ -67,7 +78,10 @@ function chosenOption() {
             options
             ;;
         all)
-            echo "Generating both XML and DMARC reports" && xmlExtracting && dmarcReport && failedDMARCReports
+            echo "Generating ALL the reports" && xmlExtracting && dmarcReport && domainReports && failedDMARCReports
+            ;;
+        dreport)
+            echo "Generating domain specific failed reports" && domainReports
             ;;
         failed)
             echo "Generating failed DMARC reports" && failedDMARCReports
@@ -88,6 +102,7 @@ function menu() {
     echo "XML: Generate XML files from reports"
     echo "Report: Generate DMARC report based on XML files"
     echo "Failed: Generate Failed DMARC report only"
+    echo "Dreport: Generate domain specific Failed DMARC report"
     echo "All: Generate XML and DMARC, and failed DMARC reports"
     read -rp "Which of the above options are you looking to use? $(echo -e '\n> ')" option
 
