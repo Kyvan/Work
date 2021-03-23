@@ -53,27 +53,53 @@ function failedDMARCReports() {
     echo "Report is ready"
 }
 
-echo "What function of the script are you looking to use?"
-echo "1. Generate XML files from reports"
-echo "2. Generate DMARC report based on XML files"
-echo "3. Generate Failed DMARC report only"
-echo "4. Generate XML and DMARC, and failed DMARC reports"
-read -rp "Option: " option
+function options() {
+    echo "These are the options that can be used with this script (only one option at a time)"
+    echo "XML: Generate XML files from reports"
+    echo "Report: Generate DMARC report based on XML files"
+    echo "Failed: Generate Failed DMARC report only"
+    echo "All: Generate XML, DMARC, and failed DMARC reports"
+}
 
-case "$option" in
-    4)
-        echo "Generating both XML and DMARC reports" && xmlExtracting && dmarcReport && failedDMARCReports
-        ;;
-    3)
-        echo "Generating failed DMARC reports" && failedDMARCReports
-        ;;
-    2)
-        echo "Generating the DMARC Reprot" && dmarcReport
-        ;;
-    1)
-        echo "Unziping to generate the XML reports" && xmlExtracting
-        ;;
-    *)
-        echo "No action needed, exiting the script"
-        ;;
-esac
+function chosenOption() {
+    case "${option,,}" in
+        --help | -h | help | h)
+            options
+            ;;
+        all)
+            echo "Generating both XML and DMARC reports" && xmlExtracting && dmarcReport && failedDMARCReports
+            ;;
+        failed)
+            echo "Generating failed DMARC reports" && failedDMARCReports
+            ;;
+        report)
+            echo "Generating the DMARC Reprot" && dmarcReport
+            ;;
+        xml)
+            echo "Unziping to generate the XML reports" && xmlExtracting
+            ;;
+        *)
+            echo "If you need to know the options, please run the script with --help"
+            ;;
+    esac
+}
+
+function menu() {
+    echo "XML: Generate XML files from reports"
+    echo "Report: Generate DMARC report based on XML files"
+    echo "Failed: Generate Failed DMARC report only"
+    echo "All: Generate XML and DMARC, and failed DMARC reports"
+    read -rp "Which of the above options are you looking to use? $(echo -e '\n> ')" option
+
+    chosenOption "$option"
+}
+
+if test "$#" -eq "0" ; then
+    menu
+elif test "$#" -eq "1" ; then
+    chosenOption "$1"
+else
+    echo "For more help, please run $0 --help"
+    echo "ERROR: You need either 1 or zero option for the script"
+    echo "USAGE: $0 [argument]"
+fi
