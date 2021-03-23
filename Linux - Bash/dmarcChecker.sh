@@ -73,7 +73,7 @@ function options() {
 }
 
 function chosenOption() {
-    case "${option,,}" in
+    case "${answer,,}" in
         --help | -h | help | h)
             options
             ;;
@@ -100,18 +100,19 @@ function chosenOption() {
 
 function menu() {
     options
-    read -rp "Which of the above options are you looking to use? $(echo -e '\n> ')" option
+    read -rp "Which of the above options are you looking to use? $(echo -e '\n> ')" answer
 
-    chosenOption "$option"
+    chosenOption "$answer"
 }
 
 if test "$#" -eq "0" ; then
     menu
 elif test "$#" -eq "1" ; then
-    option="$1"
-    chosenOption "$option"
+    answer="$1"
+    chosenOption "$answer"
 else
-    echo "For more help, please run $0 --help"
     echo "ERROR: You need either 1 or zero option for the script"
     echo "USAGE: $0 [argument]"
+    echo
+    options
 fi
