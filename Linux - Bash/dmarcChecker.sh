@@ -78,7 +78,7 @@ function chosenOption() {
             options
             ;;
         all)
-            echo "Generating ALL the reports" && xmlExtracting && dmarcReport && domainReports && failedDMARCReports
+            echo "Generating ALL the reports" && xmlExtracting && dmarcReport && failedDMARCReports && domainReports
             ;;
         dreport)
             echo "Generating domain specific failed reports" && domainReports
