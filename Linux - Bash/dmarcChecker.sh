@@ -19,9 +19,8 @@ function xmlExtracting() {
     # find command to move the XML reports to a different directory
     find . -maxdepth 1 -type f | grep -v "txt" | xargs -I {} mv {} dmarcXML/
 
-    echo "XML files are ready"
+    echo -e "\e[32mXML files are ready."
 }
-
 function xmlParser() {
 
     local IFS=\>
@@ -42,7 +41,7 @@ function dmarcReport() {
     
     find . -maxdepth 1 -type f -exec rm -f {} \;
 
-    echo "DMARC report is ready"
+    echo -e "\e[33mDMARC report is ready."
 }
 
 function failedDMARCReports() {
@@ -50,7 +49,7 @@ function failedDMARCReports() {
     cd "$archiveDir" || exit
 
     find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -B5 -i fail {} \; >> ../dmarcFailedReports/dmarcFailedReport-"$(date +%F)".txt
-    echo "Failed DMARC report is ready"
+    echo -e "\e[34mFailed DMARC report is ready."
 }
 
 function domainReports() {
@@ -59,7 +58,7 @@ function domainReports() {
     
     while read -r domains ; do
         find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -A1 -i "$domains" {} \; > "$domains\\${domains}.txt"
-        echo "$domains Report is ready"
+        echo -e "\e[35m$domains Report is ready."
     done < "c:\\users\\kyvan\\onedrive\\Documents\\git\\Work\\Linux - Bash\\domain.txt"
 }
 
