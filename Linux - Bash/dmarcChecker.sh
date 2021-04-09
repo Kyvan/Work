@@ -13,14 +13,12 @@ function xmlExtracting() {
         fi
     done
 
-    # find command to delete Zip and Gzip reports
     find . -maxdepth 1 -type f | grep -E '(zip|gz)' | xargs rm -f
-
-    # find command to move the XML reports to a different directory
     find . -maxdepth 1 -type f | grep -v "txt" | xargs -I {} mv {} dmarcXML/
 
     echo -e "\e[33mXML files are ready."
 }
+
 function xmlParser() {
 
     local IFS=\>
@@ -72,7 +70,7 @@ function options() {
 }
 
 function chosenOption() {
-    case "${answer,,}" in
+    case "${1,,}" in
         --help | -h | help | h)
             options
             ;;
@@ -100,15 +98,13 @@ function chosenOption() {
 function menu() {
     options
     read -rp "Which of the above options are you looking to use? $(echo -e '\n> ')" answer
-
     chosenOption "$answer"
 }
 
 if test "$#" -eq "0" ; then
     menu
 elif test "$#" -eq "1" ; then
-    answer="$1"
-    chosenOption "$answer"
+    chosenOption "$1"
 else
     echo "ERROR: You need either 1 or zero option for the script"
     echo "USAGE: $0 [argument]"
