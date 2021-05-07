@@ -55,7 +55,9 @@ function domainReports() {
     cd "$archiveDir" || exit
     
     while read -r domains ; do
-        mkdir "$domains"
+        if [[ ! -d "$domains" ]] ; then
+            mkdir "$domains"
+        fi
         find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -A1 -i "$domains" {} \; > "$domains\\${domains}.txt"
         echo -e "\e[36m$domains Report is ready."
     done < "c:\\users\\kyvan\\onedrive\\Documents\\git\\Work\\Linux - Bash\\domain.txt"
