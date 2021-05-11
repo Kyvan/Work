@@ -24,7 +24,11 @@ do {
     # Query the existing users on Office 365 and output to grid for selection
     $OnlineUser = Get-MsolUser | Select-Object UserPrincipalName,DisplayName,ProxyAddresses,ImmutableID | Sort-Object DisplayName | Out-GridView -Title Select The Office 365 Online User To HardLink The AD User To -PassThru
 
-    # Uncommend the ###Careful### out of the following command to purge all the deleted users from the users recycle bin on Office 365 This will only query for users that are unlicensed so it will skip users with mailboxes but still use at your own risk Careful### Get-MsolUser -ReturnDeletedUsers | Where-Object {$_.isLicensed -NE false} | Remove-MsolUser -RemoveFromRecycleBin -Force Money command that sets the office 365 user you picked with the OnPrem AD ImmutableID
+    # Uncommend the ###Careful### out of the following command to purge all the deleted users from the users recycle bin on Office 365
+    #This will only query for users that are unlicensed so it will skip users with mailboxes but still use at your own risk Careful###
+    Get-MsolUser -ReturnDeletedUsers | Where-Object {$_.isLicensed -NE "false"} | Remove-MsolUser -RemoveFromRecycleBin -Force
+    
+    #Money command that sets the office 365 user you picked with the OnPrem AD ImmutableID
     Set-MSOLuser -UserPrincipalName $OnlineUser.UserPrincipalName -ImmutableID $UserimmutableID
 
     # Verify ImmutableID has been updated
