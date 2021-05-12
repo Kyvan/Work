@@ -1,0 +1,771 @@
+
+interface A1
+   name "Ge-0/0/0 (SRX3600)"
+   monitor all both mirror 1
+   untagged vlan 20
+   exit
+interface A2
+   name "fxp0-MGT-SRX3600"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface A3
+   name "FibreNoire Uplink"
+   monitor all both mirror 1
+   untagged vlan 126
+   exit
+interface A4
+   name "SAN-mgt1"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface A5
+   name "SRX-Ge2-0-9 NOTUSED-YET"
+   monitor all both mirror 1
+   untagged vlan 128
+   exit
+interface A6
+   name "ESX25-ilo"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface A7
+   name "SRX-to-Aruba-CloudFlare"
+   monitor all both mirror 1
+   untagged vlan 182
+   exit
+interface A8
+   name "SRX-to-ge2/0/12"
+   monitor all both mirror 1
+   untagged vlan 998
+   exit
+interface A9
+   name "ESX20"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A10
+   name "ESX20"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A11
+   name "ESX20"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A12
+   name "ESX20"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A13
+   name "PureColo-Xconnect"
+   monitor all both mirror 1
+   untagged vlan 30
+   exit
+interface A14
+   name "PureColo-AP"
+   monitor all both mirror 1
+   untagged vlan 30
+   exit
+interface A15
+   name "Ge-0/0/3 (SRX3600)"
+   monitor all both mirror 1
+   untagged vlan 30
+   exit
+interface A16
+   name "SRX3600-Ge2/0/8-SRDC-PVLAN"
+   monitor all both mirror 1
+   untagged vlan 53
+   exit
+interface A17
+   name "ESX25"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A18
+   name "ESX25"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A19
+   name "ESX25"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A20
+   name "ESX25"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A21
+   name "ESX25"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A22
+   name "ESX25"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface A23
+   name "ESX26-ilo"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface A24
+   name "CloudFlare-Equipment"
+   monitor all both mirror 1
+   untagged vlan 182
+   exit
+interface B1
+   name "ESX21"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface B2
+   name "ESX21"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface B3
+   name "ESX21"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface B4
+   name "ESX21"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface B5
+   name "DO-NOT-USE"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,40-41,45,51,53-56,58,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface B6
+   name "esx22"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface B7
+   name "esx22"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface B8
+   name "esx22"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface B9
+   name "Caseware-SkyNET-ilo"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface B10
+   name "Caseware-SkyNET"
+   monitor all both mirror 1
+   untagged vlan 128
+   exit
+interface B11
+   name "Caseware-SkyNET"
+   monitor all both mirror 1
+   untagged vlan 128
+   exit
+interface B12
+   name "Caseware-SkyNET"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface B13
+   name "ESX22"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,128,184,998-999
+   untagged vlan 1
+   exit
+interface B14
+   name "SRX340-VPN-mgt"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface B15
+   name "darktrace-portmirror"
+   untagged vlan 20
+   mirror 1
+   exit
+interface B16
+   name "darktrace-mgt"
+   untagged vlan 20
+   exit
+interface B17
+   name "darktrace-portmirror"
+   untagged vlan 1
+   mirror 2
+   exit
+interface B18
+   name "SRX-to-Aruba-EOSNation"
+   monitor all both mirror 1
+   rate-limit all in percent 70
+   rate-limit all out percent 80
+   untagged vlan 181
+   exit
+interface B19
+   name "SA4500-External"
+   monitor all both mirror 1
+   untagged vlan 126
+   exit
+interface B20
+   name "SA4500-Private"
+   monitor all both mirror 1
+   tagged vlan 10,20
+   untagged vlan 1
+   exit
+interface B21
+   untagged vlan 1
+   trunk trk1 trunk
+   exit
+interface B22
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface B23
+   untagged vlan 1
+   trunk trk1 trunk
+   exit
+interface B24
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C1
+   name "Ge-0/0/1 (SRX3600)"
+   monitor all both mirror 1
+   untagged vlan 21
+   exit
+interface C2
+   name "Ge-0/0/2 (SRX3600)"
+   monitor all both mirror 1
+   untagged vlan 22
+   exit
+interface C3
+   name "NBU3 VLAN20-Interface"
+   monitor all both mirror 1
+   untagged vlan 20
+   exit
+interface C4
+   name "SAN-mgt2"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C5
+   name "Ge2/0/1.0-SRX3600 LB-VIP"
+   monitor all both mirror 1
+   untagged vlan 998
+   exit
+interface C6
+   name "NBU3-Public"
+   monitor all both mirror 1
+   untagged vlan 126
+   exit
+interface C7
+   name "NBU3-ILO"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C8
+   name "NBU3-Private"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C9
+   name "ESX20"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface C10
+   name "ESX20"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface C11
+   name "ESX20"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface C12
+   name "ESX20"
+   monitor all both mirror 1
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface C13
+   name "ESX20-ILO"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C14
+   name "ESX21-ILO"
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C15
+   name "Ge2/0/15-SRX3600 DNS-NET1"
+   monitor all both mirror 1
+   untagged vlan 128
+   exit
+interface C16
+   monitor all both mirror 1
+   untagged vlan 181
+   exit
+interface C17
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C18
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C19
+   name "SRX340-VPN-ge2"
+   monitor all both mirror 1
+   untagged vlan 21
+   exit
+interface C20
+   name "SRX340-VPN-ge3"
+   monitor all both mirror 1
+   untagged vlan 53
+   exit
+interface C21
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C22
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C23
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface C24
+   monitor all both mirror 1
+   untagged vlan 1
+   exit
+interface D1
+   name "ESX21"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface D2
+   name "ESX21"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface D3
+   name "ESX21"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface D4
+   name "ESX21"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface D5
+   name "esx22"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface D6
+   name "esx22"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface D7
+   name "esx22"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface D8
+   name "esx22"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface D9
+   name "SRX340-VPN-ge4"
+   monitor all both mirror 2
+   untagged vlan 27
+   exit
+interface D10
+   name "SRX340-VPN-ge5"
+   monitor all both mirror 2
+   tagged vlan 10,54-56,58,62
+   untagged vlan 1
+   exit
+interface D11
+   monitor all both mirror 2
+   untagged vlan 181
+   exit
+interface D12
+   name "JuniperSRX-Ge2/0/13-Bluink"
+   monitor all both mirror 2
+   untagged vlan 183
+   exit
+interface D13
+   name "esx22-ilo"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface D14
+   name "NBU3-VLAN21"
+   monitor all both mirror 2
+   tagged vlan 128,184
+   untagged vlan 21
+   exit
+interface D15
+   name "Bluink-firewall1"
+   lacp active
+   monitor all both mirror 2
+   untagged vlan 183
+   exit
+interface D16
+   name "Bluink-firewall2"
+   lacp active
+   monitor all both mirror 2
+   untagged vlan 183
+   exit
+interface D17
+   name "sbcott04b-ilo"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface D18
+   name "SRX-ge2/0/4"
+   monitor all both mirror 2
+   tagged vlan 10,54-62
+   untagged vlan 1
+   exit
+interface D19
+   name "SRX340-VPN-Public-FibreNoire"
+   monitor all both mirror 2
+   untagged vlan 126
+   exit
+interface D20
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface D21
+   name "SRX340-VPN-private"
+   monitor all both mirror 2
+   untagged vlan 20
+   exit
+interface D22
+   name "3par-SAN-Mgt"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface D23
+   name "sbcott04a-ilo"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface D24
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface E1
+   name "sbcott04a-int0"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface E2
+   name "sbcott04a-int4"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface E3
+   name "sbcott04b-int4"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface E4
+   name "sbcott04b-int0"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface E5
+   name "MSIcorp2-iLO"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface E6
+   name "MSIcorpSTG1-iLO"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface E7
+   name "MSIcorp1-IP"
+   monitor all both mirror 2
+   untagged vlan 128
+   exit
+interface E8
+   name "MSIcorpSTG1-IP"
+   monitor all both mirror 2
+   untagged vlan 128
+   exit
+interface E9
+   name "esx23-ilo"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface E10
+   name "esx23"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,128,184,998-999
+   untagged vlan 1
+   exit
+interface E11
+   name "esx23"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,128,184,998-999
+   untagged vlan 1
+   exit
+interface E12
+   name "esx23"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,128,184,998-999
+   untagged vlan 1
+   exit
+interface E13
+   name "esx23"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,128,184,998-999
+   untagged vlan 1
+   exit
+interface E14
+   name "esx23"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,128,184,998-999
+   untagged vlan 1
+   exit
+interface E15
+   name "esx23"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,128,184,998-999
+   untagged vlan 1
+   exit
+interface E16
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface E17
+   name "ESX26"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface E18
+   name "ESX26"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface E19
+   name "ESX26"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface E20
+   name "ESX26"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface E21
+   name "ESX26"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface E22
+   name "ESX26"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface E23
+   name "ESX26"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface E24
+   name "ESX26"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,51,53-56,58,62,126,128,184,998-999
+   untagged vlan 1
+   exit
+interface F1
+   name "sbcott04a-int1"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface F2
+   name "sbcott04a-int2"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface F3
+   name "sbcott04a-int3"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface F4
+   name "sbcott04b-int1"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface F5
+   name "sbcott04b-int2"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface F6
+   name "sbcott04b-int3"
+   monitor all both mirror 2
+   tagged vlan 20,51,128
+   exit
+interface F7
+   name "esx27"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,53-56,58,62,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface F8
+   name "esx27"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,53-56,58,62,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface F9
+   name "esx27"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,53-56,58,62,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface F10
+   name "esx27"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,53-56,58,62,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface F11
+   name "esx27"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,53-56,58,62,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface F12
+   name "esx30"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,53-56,58,62,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface F13
+   name "esx30"
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,53-56,58,62,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface F14
+   name "JuniperSRX-ge2/3"
+   monitor all both mirror 2
+   tagged vlan 185,400
+   exit
+interface F15
+   name "esx30-ilo"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface F16
+   name "veeamproxy"
+   lacp active
+   monitor all both mirror 2
+   untagged vlan 20
+   exit
+interface F17
+   name "veeamproxy"
+   lacp active
+   monitor all both mirror 2
+   untagged vlan 20
+   exit
+interface F18
+   name "veeamproxy-ilo"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface F19
+   name "ogi-fax-ilo"
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface F20
+   name "ogi-fax-private"
+   monitor all both mirror 2
+   untagged vlan 21
+   exit
+interface F21
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface F22
+   monitor all both mirror 2
+   untagged vlan 1
+   exit
+interface F23
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,53-56,58,62,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface F24
+   monitor all both mirror 2
+   tagged vlan 10,20-23,27,40-41,45,53-56,58,62,128,180,184,998-999
+   untagged vlan 1
+   exit
+interface Trk1
+   monitor all both mirror 1
+   tagged vlan 10,20,57,59-61,128,185,400
+   untagged vlan 1
+   spanning-tree priority 4
+   exit
