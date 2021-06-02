@@ -2,7 +2,8 @@
 
 function xmlExtracting() {
     archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC"
-    cd "$archiveDir" || exit
+    archiveDirLinux="/home/almond/Insync/kyvan@dnsnetworks.com/OneDrive Biz/DMARC"
+    cd "$archiveDir" 2> /dev/null || cd "$archiveDirLinux" 2> /dev/null || exit
 
     # Loop to unzip Gzip and Zip reports
     for reports in * ; do
@@ -27,7 +28,8 @@ function xmlParser() {
 
 function dmarcReport() {
     xmlDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC\dmarcXML"
-    cd "$xmlDir" || exit
+    xmlDirLinux="/home/almond/Insync/kyvan@dnsnetworks.com/OneDrive Biz/DMARC/dmarcXML"
+    cd "$xmlDir" 2> /dev/null || cd "$xmlDirLinux" 2> /dev/null || exit
     
     for xmlReports in * ; do
         while xmlParser ; do
@@ -44,23 +46,25 @@ function dmarcReport() {
 
 function failedDMARCReports() {
     archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC\dmarcReports"
-    cd "$archiveDir" || exit
+    archiveDirLinux="/home/almond/Insync/kyvan@dnsnetworks.com/OneDrive Biz/DMARC/dmarcReports"
+    cd "$archiveDir" 2> /dev/null || cd "$archiveDirLinux" 2> /dev/null || exit
 
     find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -B4 -i fail {} \; >> ../dmarcFailedReports/dmarcFailedReport-"$(date +%F)".txt
     echo -e "\e[35mFailed DMARC report is ready."
 }
 
 function domainReports() {
-    archiveDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC\dmarcFailedReports"
-    cd "$archiveDir" || exit
+    failedDir="c:\users\kyvan\OneDrive - dnsnetworks.ca\DMARC\dmarcFailedReports"
+    failedDirLinux="/home/almond/Insync/kyvan@dnsnetworks.com/OneDrive Biz/DMARC/dmarcFailedReports"
+    cd "$failedDir" 2> /dev/null || cd "$failedDirLinux" 2> /dev/null || exit
     
     while read -r domains ; do
         if [[ ! -d "$domains" ]] ; then
             mkdir "$domains"
         fi
-        find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -A1 -i "$domains" {} \; > "$domains\\${domains}.txt"
+        find . -maxdepth 1 -daystart -mtime -1 -type f -exec grep -A1 -i "$domains" {} \; > "$domains/${domains}.txt"
         echo -e "\e[36m$domains Report is ready."
-    done < "c:\\users\\kyvan\\onedrive\\Documents\\git\\Work\\Linux - Bash\\domain.txt"
+    done < /home/almond/gitHub/Work/Linux\ -\ Bash/domain.txt
 }
 
 function options() {
