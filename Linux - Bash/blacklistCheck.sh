@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash -u
 #
 # Check if an IP address is listed on one of the 
 # following blacklists. The format is chosen to 
@@ -12,15 +12,16 @@ BLISTS="
     bl.spamcop.net
     zen.spamhaus.org
     combined.njabl.org
+    sbl.spamhaus.org
 "
 # register at http://www.projecthoneypot.org/httpbl_api.php to
 # obtain an API-key
-HTTPbl_API_KEY="[your_api_key]"
+HTTPbl_API_KEY="kuftlkfcbwij"
 # simple shell function to show an error message and exit
 #  $0  : the name of shell script, $1 is the string passed as argument
 #  >&2  : redirect/send the message to stderr
 ERROR() {
-  echo $0 ERROR: $1 >&2
+  echo "$0" ERROR: "$1" >&2
   exit 2
 }
 
@@ -31,9 +32,9 @@ ERROR() {
 # -- reverse the order
 # -- if the address does not match these criteria the variable
 #    'reverse will be empty'
-reverse=$(echo $1 |
+reverse=$(echo "$1" |
 sed -ne "s~^\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)$~\4.\3.\2.\1~p")
-if [ "x${reverse}" = "x" ] ; then
+if [ "${reverse}" = "" ] ; then
       ERROR  "IMHO '$1' doesn't look like a valid IP address"
       exit 1
 fi
@@ -50,13 +51,13 @@ fi
 # This evaluates to true, so the script will call the ERROR function
 # and quit
 # -- do a reverse ( address -> name) DNS lookup
-REVERSE_DNS=$(dig +short -x $1)
-echo IP $1 NAME ${REVERSE_DNS:----}
+REVERSE_DNS=$(dig +short -x "$1")
+echo IP "$1" NAME "${REVERSE_DNS:----}"
 
 # -- cycle through all the blacklists
 for BL in ${BLISTS} ; do
     # print the UTC date (without linefeed)
-    printf $(env TZ=UTC date "+%Y-%m-%d_%H:%M:%S")
+    printf "%s" "$(env TZ=America/Toronto date +%Y-%m-%d_%H:%M:%S)"
     # show the reversed IP and append the name of the blacklist
     if [ "$BL" == "dnsbl.httpbl.org" ];
     then
@@ -68,11 +69,11 @@ for BL in ${BLISTS} ; do
     # echo "$(dig +short -t a ${reverse}.${BL}. |  tr 'n' ' ')"
     if [ "$BL" == "dnsbl.httpbl.org" ];
     then
-      LISTED="$(dig +short -t a ${HTTPbl_API_KEY}.${reverse}.${BL}.)"
-      echo ${LISTED:----}
+      LISTED=$(dig +short -t a "${HTTPbl_API_KEY}.${reverse}.${BL}.")
+      echo "${LISTED:----}"
     else
-      LISTED="$(dig +short -t a ${reverse}.${BL}.)"
-      echo ${LISTED:----}
+      LISTED=$(dig +short -t a "${reverse}.${BL}.")
+      echo "${LISTED:----}"
     fi
 done
 # --- EOT ------
