@@ -69,10 +69,10 @@ for BL in ${BLISTS} ; do
     # echo "$(dig +short -t a ${reverse}.${BL}. |  tr 'n' ' ')"
     if [ "$BL" == "dnsbl.httpbl.org" ];
     then
-      LISTED=$(dig +short -t a "${HTTPbl_API_KEY}.${reverse}.${BL}.")
+      LISTED=$(dig -t a "${HTTPbl_API_KEY}.${reverse}.${BL}.")
       echo "${LISTED:----}"
     else
-      LISTED=$(dig +short -t a "${reverse}.${BL}.")
+      LISTED=$(dig -t a "${reverse}.${BL}.")
       echo "${LISTED:----}"
     fi
 done
