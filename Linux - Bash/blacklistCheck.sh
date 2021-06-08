@@ -32,8 +32,15 @@ ERROR() {
 # -- reverse the order
 # -- if the address does not match these criteria the variable
 #    'reverse will be empty'
+
+### Commented out as it did not check for valid IPv4s
+#reverse=$(echo "$1" |
+#sed -ne "s~^\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)$~\4.\3.\2.\1~p")
+
+### New command that checks for valid IPv4 IPs
 reverse=$(echo "$1" |
-sed -ne "s~^\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)$~\4.\3.\2.\1~p")
+sed -nr "s~^(25[0-5]|2[0-4][0-9]|1?[0-9]{0,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{0,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{0,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{0,2})$~\4.\3.\2.\1~p")
+
 if [ "${reverse}" = "" ] ; then
       ERROR "'$1' is not a valid IP address"
       exit 1
