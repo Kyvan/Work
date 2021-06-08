@@ -35,7 +35,7 @@ ERROR() {
 reverse=$(echo "$1" |
 sed -ne "s~^\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)\.\([0-9]\{1,3\}\)$~\4.\3.\2.\1~p")
 if [ "${reverse}" = "" ] ; then
-      ERROR  "IMHO '$1' doesn't look like a valid IP address"
+      ERROR "'$1' doesn't look like a valid IP address"
       exit 1
 fi
 
