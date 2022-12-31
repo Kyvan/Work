@@ -13,3 +13,8 @@ while read -r line ; do
     # gzip archive of website
     tar -czf "$line"/"$line".tar.gz "$line"/* "$line"/.??*
 done < mf-dev.txt
+
+
+testing="stuff that matters"
+
+ls $testing
